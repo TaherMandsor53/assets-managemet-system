@@ -8,6 +8,10 @@
 		"start": "webpack-dev-server --mode development --open --hot",
 		"build": "webpack --mode production"
 	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/TaherMandsor53/assets-managemet-system.git"
+	},
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
