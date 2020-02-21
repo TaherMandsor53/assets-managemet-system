@@ -6,7 +6,7 @@ module.exports = {
 	mode: 'development',
 	entry: './main.js',
 	output: {
-		path: path.join(__dirname, 'dist'),
+		path: path.resolve(__dirname, './dist'),
 		filename: 'bundle.js',
 	},
 
@@ -40,9 +40,13 @@ module.exports = {
 	],
 	devServer: {
 		port: 9191,
+		host: '0.0.0.0',
 		inline: true,
 		historyApiFallback: true,
 		disableHostCheck: true,
 		headers: { 'Access-Control-Allow-Origin': '*' },
+	},
+	optimization: {
+		minimize: false,
 	},
 };
