@@ -1,9 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
 
 module.exports = {
-	mode: 'development',
 	entry: './main.js',
 	output: {
 		path: path.resolve(__dirname, './dist'),
@@ -13,22 +11,21 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.jsx?$/,
+				test: /\.(js|jsx)$/,
 				exclude: /node_modules/,
-				loader: 'babel-loader',
-				query: {
-					presets: ['@babel/preset-env'],
+				use: {
+					loader: 'babel-loader',
 				},
 			},
 			{
-				test: /\.(png|jpe?g|gif)$/i,
+				test: /\.(png|jpe?g|gif|woff|woff2|eot|ttf|svg)$/,
 				loader: 'file-loader',
 				options: {
 					name: '[path][name].[ext]',
 				},
 			},
 			{
-				test: /\.(less|css)$/i,
+				test: /\.(less)$/,
 				use: [
 					{
 						loader: 'style-loader',
@@ -41,11 +38,24 @@ module.exports = {
 					},
 				],
 			},
+			{
+				test: /\.css$/,
+				use: ['style-loader', 'css-loader'],
+			},
+			{
+				test: /\.html$/,
+				use: [
+					{
+						loader: 'html-loader',
+					},
+				],
+			},
 		],
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: './dist/index.html',
+			filename: './index.html',
 		}),
 	],
 	devServer: {
