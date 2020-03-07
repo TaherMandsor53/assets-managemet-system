@@ -61,6 +61,7 @@ module.exports = {
 	devServer: {
 		port: 9191,
 		inline: true,
+		host: 'localhost',
 		historyApiFallback: true,
 		disableHostCheck: true,
 		headers: { 'Access-Control-Allow-Origin': '*' },

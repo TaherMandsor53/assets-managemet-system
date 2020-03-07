@@ -1,26 +1,27 @@
 import React, { Component } from 'react';
-import { Button, Form, Grid, Message, Segment, Modal, ModalHeader, Icon, Label } from 'semantic-ui-react';
-
+import { Button, Form, Segment, Icon } from 'semantic-ui-react';
+import loginImage from '../../assets/assets-login.png';
 class LoginForm extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			registerModalOpen: false,
 			emailValue: '',
 			passValue: '',
 			loggedIn: false,
 			errorCheck: false,
 			label: '',
-			userType: '',
+			showLoginForm: true,
+			showSecurityForm: false,
+			showChangePassForm: false,
+			securityAnsValue: '',
 		};
-
-		this.Reset = this.Reset.bind(this);
-		this.openRegister = this.openRegister.bind(this);
-		this.onRegisterClose = this.onRegisterClose.bind(this);
 		this.emailHandleChange = this.emailHandleChange.bind(this);
 		this.passHandleChange = this.passHandleChange.bind(this);
-		// this.validateUser = this.validateUser.bind(this);
 		this.onLoginClick = this.onLoginClick.bind(this);
+		this.onSubmitClick = this.onSubmitClick.bind(this);
+		this.onCancelClick = this.onCancelClick.bind(this);
+		this.onForgotPasswordClick = this.onForgotPasswordClick.bind(this);
+		this.onSecurityChange = this.onSecurityChange.bind(this);
 	}
 
 	componentDidMount() {
@@ -36,97 +37,127 @@ class LoginForm extends Component {
 		this.setState({ passValue: event.target.value });
 	}
 
-	// validateUser() {
-	// 	const { userDetailsData } = this.props;
-	// 	const { passValue, emailValue } = this.state;
-	// 	const loginStatus = userDetailsData.find(item =>
-	// 		item.email === emailValue && item.password === passValue ? true : false,
-	// 	);
-
-	// 	if (loginStatus) {
-	// 		this.setState({ loggedIn: true, userType: loginStatus.userType });
-	// 		this.Reset();
-	// 	} else {
-	// 		this.setState({ errorCheck: true, label: 'Please enter valid UserName/Password', loggedIn: false });
-	// 	}
-	// }
+	onSecurityChange(event) {
+		this.setState({ securityAnsValue: event.target.value });
+	}
 
 	onLoginClick() {
-		this.validateUser();
+		const { userDetailsData } = this.props;
+		const { passValue, emailValue } = this.state;
+
+		if (userDetailsData[0].email === emailValue && userDetailsData[0].password === passValue) {
+			this.setState({ errorCheck: false, label: '', emailValue: '', passValue: '', loggedIn: true });
+		} else {
+			this.setState({ errorCheck: true, label: 'Please enter valid UserName/Password', loggedIn: false });
+		}
 	}
 
-	openRegister() {
-		const { modalClose } = this.props;
-		modalClose();
-		this.setState({ registerModalOpen: true });
-	}
-
-	Reset() {
-		const { modalClose } = this.props;
-		modalClose();
-		this.setState({ errorCheck: false, label: '' });
-	}
-
-	onRegisterClose() {
-		this.setState({ registerModalOpen: false });
-	}
-	render() {
-		const { loginModalOpen, userDetailsData, loginStatus } = this.props;
-		const { registerModalOpen, errorCheck, loggedIn, userType } = this.state;
-		// loginStatus(loggedIn, userType);
-		console.log('UserDetails :', userDetailsData);
+	//Show Login Form
+	displayLoginForm() {
+		const { errorCheck, emailValue, passValue } = this.state;
 		return (
-			<div>
-				<Modal open={loginModalOpen} closeIcon onClose={this.Reset}>
-					<Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
-						<Grid.Column style={{ maxWidth: 450 }}>
-							<ModalHeader className="login-header">
-								<Icon name="newspaper outline" size="big" className="login-model-icon" />
-								<label>Log-in to NewsHunt</label>
-							</ModalHeader>
-							<Form size="large" className="login-form">
-								<Segment stacked className="login-box">
-									<Form.Input
-										fluid
-										icon="user"
-										iconPosition="left"
-										placeholder="E-mail address"
-										className="login-input"
-										onChange={this.emailHandleChange}
-										error={errorCheck}
-										label={this.state.label}
-									/>
-									<Form.Input
-										fluid
-										icon="lock"
-										iconPosition="left"
-										placeholder="Password"
-										type="password"
-										className="login-input"
-										onChange={this.passHandleChange}
-										error={errorCheck}
-									/>
+			<Form className="login-form">
+				<Segment stacked className="login-box">
+					<Form.Input
+						icon="user"
+						iconPosition="left"
+						placeholder="E-mail address"
+						className="login-input"
+						onChange={this.emailHandleChange}
+						error={errorCheck}
+						label={this.state.label}
+						value={emailValue}
+					/>
+					<Form.Input
+						icon="lock"
+						iconPosition="left"
+						placeholder="Password"
+						type="password"
+						className="login-input"
+						onChange={this.passHandleChange}
+						error={errorCheck}
+						value={passValue}
+					/>
 
-									<Button
-										color="teal"
-										fluid
-										size="large"
-										className="login-button"
-										onClick={this.onLoginClick}
-									>
-										Login
-									</Button>
-								</Segment>
-							</Form>
-							<Message className="login-message">
-								<Label className="login-signup-label" onClick={this.openRegister}>
-									New to us? {'  '}
-									<b>Register</b>
-								</Label>
-							</Message>
-						</Grid.Column>
-					</Grid>
-				</Modal>
+					<Button className="login-button" onClick={this.onLoginClick}>
+						Login Now
+					</Button>
+					<Button className="forgot-pass-button" onClick={this.onForgotPasswordClick}>
+						Forgot Password?
+					</Button>
+				</Segment>
+			</Form>
+		);
+	}
+
+	onForgotPasswordClick() {
+		this.setState({ showLoginForm: false, showSecurityForm: true });
+	}
+
+	onCancelClick() {}
+
+	onSubmitClick() {
+		if (this.props.userDetailsData[0].securityAnswer === this.state.securityAnsValue) {
+			this.setState({ errorCheck: false, label: '', showChangePassForm: true, showSecurityForm: false });
+		} else {
+			this.setState({
+				errorCheck: true,
+				label: 'Please enter valid security details',
+				showChangePassForm: false,
+				showSecurityForm: true,
+			});
+		}
+	}
+
+	//Show Security Form
+	displaySecurityForm() {
+		const { errorCheck, securityAnsValue, label } = this.state;
+
+		return (
+			<Form className="login-form">
+				<Segment stacked className="login-box">
+					<Form.Input
+						icon="key"
+						iconPosition="left"
+						placeholder="What is your favourite hobby?"
+						className="login-input"
+						onChange={this.onSecurityChange}
+						error={errorCheck}
+						label={label}
+						value={securityAnsValue}
+					/>
+
+					<Button className="security-submit-button" onClick={this.onSubmitClick}>
+						Submit
+					</Button>
+					<Button className="security-cancel-button" onClick={this.onCancelClick}>
+						Cancel
+					</Button>
+				</Segment>
+			</Form>
+		);
+	}
+
+	render() {
+		const { userDetailsData } = this.props;
+		const { showLoginForm, showSecurityForm } = this.state;
+		return (
+			<div className="assets-login-details">
+				<div className="assets-heading">
+					<Icon name="cogs" size="big" className="assets-icon" />
+					<h2 className="assets-text">Assets Management System</h2>
+				</div>
+				<div className="assets-image-form">
+					<img src={loginImage} className="assets-login-img" />
+					<div className="login-details-form">
+						<div className="login-header-text">Welcome Back :)</div>
+						<p className="login-sub-text">
+							To keep connected please login with your personal information by email address and password
+						</p>
+						{showLoginForm && this.displayLoginForm()}
+						{!showLoginForm && showSecurityForm && this.displaySecurityForm()}
+					</div>
+				</div>
 			</div>
 		);
 	}

@@ -4,7 +4,7 @@ import { requestUserDetails } from '../actions/action';
 import LoginForm from '../components/loginForm/LoginForm';
 
 const mapStateToProps = state => ({
-	userDetailsData: state.userDetails.userDetailsData,
+	userDetailsData: state.userDetails.userDetailsData.data,
 });
 const mapDispatchToProps = dispatch =>
 	bindActionCreators(
