@@ -3,7 +3,7 @@ const cors = require('cors');
 const app = express();
 const mysql = require('mysql');
 
-const SELECT_ALL_CUSTOMERS_QUERY = 'select * from customers';
+const SELECT_ALL_USER_QUERY = 'select * from UserDetails';
 
 const connection = mysql.createConnection({
 	host: 'localhost',
@@ -23,11 +23,11 @@ connection.connect(err => {
 app.use(cors());
 
 app.get('/', (req, res) => {
-	res.send('goto /customers to search employee records');
+	res.send('goto /UserDetails to search user records');
 });
 
-app.use('/customers', (req, res) => {
-	connection.query(SELECT_ALL_CUSTOMERS_QUERY, (err, result) => {
+app.use('/UserDetails', (req, res) => {
+	connection.query(SELECT_ALL_USER_QUERY, (err, result) => {
 		if (err) {
 			console.log('error');
 			return res.send(err);

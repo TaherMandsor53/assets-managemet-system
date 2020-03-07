@@ -29,7 +29,17 @@ module.exports = {
 			},
 			{
 				test: /\.(less|css)$/i,
-				use: ['less-loader', 'css-loader'],
+				use: [
+					{
+						loader: 'style-loader',
+					},
+					{
+						loader: 'css-loader',
+					},
+					{
+						loader: 'less-loader',
+					},
+				],
 			},
 		],
 	},
@@ -40,7 +50,6 @@ module.exports = {
 	],
 	devServer: {
 		port: 9191,
-		host: '0.0.0.0',
 		inline: true,
 		historyApiFallback: true,
 		disableHostCheck: true,
