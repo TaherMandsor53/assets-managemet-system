@@ -2,8 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const mysql = require('mysql');
-
-const SELECT_ALL_USER_QUERY = 'select * from UserDetails';
+const bodyParser = require('body-parser');
 
 const connection = mysql.createConnection({
 	host: 'localhost',
@@ -14,7 +13,7 @@ const connection = mysql.createConnection({
 
 connection.connect(err => {
 	if (err) {
-		console.log('Error in connection');
+		console.log(err);
 		return err;
 	} else {
 		console.log('Connect to database');
@@ -22,18 +21,40 @@ connection.connect(err => {
 });
 app.use(cors());
 
+// to fetch data from Request Payload
+app.use(
+	bodyParser.urlencoded({
+		extended: true,
+	}),
+);
+
+app.use(bodyParser.json());
+
 app.get('/', (req, res) => {
 	res.send('goto /UserDetails to search user records');
 });
 
-app.use('/UserDetails', (req, res) => {
+app.get('/api/UserDetails', (req, res) => {
+	const SELECT_ALL_USER_QUERY = 'select * from UserDetails';
 	connection.query(SELECT_ALL_USER_QUERY, (err, result) => {
 		if (err) {
 			console.log('error');
 			return res.send(err);
 		} else {
-			console.log(result);
 			return res.json({ data: result });
+		}
+	});
+});
+
+// Update a user password
+app.put('/api/UserDetails/passUpdate', (req, res) => {
+	let passValue = '"' + req.body.password + '"';
+	const UPDATE_USER_PASSWORD = `UPDATE UserDetails SET password = ${passValue} WHERE userId = "BadriTraders"`;
+	connection.query(UPDATE_USER_PASSWORD, (err, result) => {
+		if (err) {
+			res.send(err);
+		} else {
+			res.send('Updated successfully');
 		}
 	});
 });

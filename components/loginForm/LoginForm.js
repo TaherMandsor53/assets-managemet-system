@@ -9,19 +9,27 @@ class LoginForm extends Component {
 			passValue: '',
 			loggedIn: false,
 			errorCheck: false,
-			label: '',
+			loginErrorMessage: '',
+			securityErrorMessage: '',
+			passwordErrorMessage: '',
 			showLoginForm: true,
 			showSecurityForm: false,
 			showChangePassForm: false,
 			securityAnsValue: '',
+			newPassVal: '',
+			confirmPassVal: '',
+			showPassMessage: false,
 		};
 		this.emailHandleChange = this.emailHandleChange.bind(this);
 		this.passHandleChange = this.passHandleChange.bind(this);
 		this.onLoginClick = this.onLoginClick.bind(this);
-		this.onSubmitClick = this.onSubmitClick.bind(this);
+		this.onSecuritySubmitClick = this.onSecuritySubmitClick.bind(this);
 		this.onCancelClick = this.onCancelClick.bind(this);
 		this.onForgotPasswordClick = this.onForgotPasswordClick.bind(this);
 		this.onSecurityChange = this.onSecurityChange.bind(this);
+		this.onNewPassChange = this.onNewPassChange.bind(this);
+		this.onConfirmPassChange = this.onConfirmPassChange.bind(this);
+		this.onPassSubmitClick = this.onPassSubmitClick.bind(this);
 	}
 
 	componentDidMount() {
@@ -41,14 +49,26 @@ class LoginForm extends Component {
 		this.setState({ securityAnsValue: event.target.value });
 	}
 
+	onNewPassChange(event) {
+		this.setState({ newPassVal: event.target.value });
+	}
+
+	onConfirmPassChange(event) {
+		this.setState({ confirmPassVal: event.target.value });
+	}
+
 	onLoginClick() {
 		const { userDetailsData } = this.props;
 		const { passValue, emailValue } = this.state;
 
 		if (userDetailsData[0].email === emailValue && userDetailsData[0].password === passValue) {
-			this.setState({ errorCheck: false, label: '', emailValue: '', passValue: '', loggedIn: true });
+			this.setState({ errorCheck: false, loginErrorMessage: '', emailValue: '', passValue: '', loggedIn: true });
 		} else {
-			this.setState({ errorCheck: true, label: 'Please enter valid UserName/Password', loggedIn: false });
+			this.setState({
+				errorCheck: true,
+				loginErrorMessage: 'Please enter valid UserName/Password',
+				loggedIn: false,
+			});
 		}
 	}
 
@@ -65,7 +85,7 @@ class LoginForm extends Component {
 						className="login-input"
 						onChange={this.emailHandleChange}
 						error={errorCheck}
-						label={this.state.label}
+						label={this.state.loginErrorMessage}
 						value={emailValue}
 					/>
 					<Form.Input
@@ -91,18 +111,20 @@ class LoginForm extends Component {
 	}
 
 	onForgotPasswordClick() {
-		this.setState({ showLoginForm: false, showSecurityForm: true });
+		this.setState({ showLoginForm: false, showSecurityForm: true, loginErrorMessage: '', errorCheck: false });
 	}
 
-	onCancelClick() {}
+	onCancelClick() {
+		this.setState({ securityAnsValue: '', newPassVal: '', confirmPassVal: '', showPassMessage: false });
+	}
 
-	onSubmitClick() {
+	onSecuritySubmitClick() {
 		if (this.props.userDetailsData[0].securityAnswer === this.state.securityAnsValue) {
 			this.setState({ errorCheck: false, label: '', showChangePassForm: true, showSecurityForm: false });
 		} else {
 			this.setState({
 				errorCheck: true,
-				label: 'Please enter valid security details',
+				securityErrorMessage: 'Please enter valid security details',
 				showChangePassForm: false,
 				showSecurityForm: true,
 			});
@@ -111,7 +133,7 @@ class LoginForm extends Component {
 
 	//Show Security Form
 	displaySecurityForm() {
-		const { errorCheck, securityAnsValue, label } = this.state;
+		const { errorCheck, securityAnsValue, securityErrorMessage } = this.state;
 
 		return (
 			<Form className="login-form">
@@ -123,11 +145,11 @@ class LoginForm extends Component {
 						className="login-input"
 						onChange={this.onSecurityChange}
 						error={errorCheck}
-						label={label}
+						label={securityErrorMessage}
 						value={securityAnsValue}
 					/>
 
-					<Button className="security-submit-button" onClick={this.onSubmitClick}>
+					<Button className="security-submit-button" onClick={this.onSecuritySubmitClick}>
 						Submit
 					</Button>
 					<Button className="security-cancel-button" onClick={this.onCancelClick}>
@@ -138,9 +160,73 @@ class LoginForm extends Component {
 		);
 	}
 
+	onPassSubmitClick() {
+		const { updatePasswordDetails } = this.props;
+		if (this.state.newPassVal === this.state.confirmPassVal) {
+			console.log('Matches');
+			updatePasswordDetails(this.state.newPassVal);
+			this.setState({ errorCheck: false, showPassMessage: true, confirmPassVal: '', newPassVal: '' });
+		} else {
+			this.setState({
+				errorCheck: true,
+				passwordErrorMessage: 'New and Confirm password must be same',
+				newPassVal: '',
+				confirmPassVal: '',
+				showPassMessage: false,
+			});
+		}
+	}
+
+	// show Change password form
+	displayChangePasswordForm() {
+		console.log(this.state.showPassMessage);
+		let successMessageContent =
+			'Please login with your new credentials <br/> <a href="http://localhost:9191/login">Click here to Login</a>';
+		return (
+			<Form className="login-form">
+				<Segment stacked className="login-box">
+					<Form.Input
+						icon="lock"
+						iconPosition="left"
+						placeholder="New Password"
+						type="password"
+						className="login-input"
+						onChange={this.onNewPassChange}
+						error={this.state.errorCheck}
+						label={this.state.passwordErrorMessage}
+						value={this.state.newPassVal}
+					/>
+					<Form.Input
+						icon="lock"
+						iconPosition="left"
+						placeholder="Confirm Password"
+						type="password"
+						className="login-input"
+						onChange={this.onConfirmPassChange}
+						error={this.state.errorCheck}
+						value={this.state.confirmPassVal}
+					/>
+					<Button className="security-submit-button" onClick={this.onPassSubmitClick}>
+						Submit
+					</Button>
+					<Button className="security-cancel-button" onClick={this.onCancelClick}>
+						Cancel
+					</Button>
+
+					{this.state.showPassMessage && (
+						<div className="pass-success-message">
+							<h4 className="message-header">Password updated succesfully</h4>
+							<p dangerouslySetInnerHTML={{ __html: successMessageContent }} />
+						</div>
+					)}
+				</Segment>
+			</Form>
+		);
+	}
+
 	render() {
 		const { userDetailsData } = this.props;
-		const { showLoginForm, showSecurityForm } = this.state;
+		const { showLoginForm, showSecurityForm, showChangePassForm } = this.state;
 		return (
 			<div className="assets-login-details">
 				<div className="assets-heading">
@@ -156,6 +242,7 @@ class LoginForm extends Component {
 						</p>
 						{showLoginForm && this.displayLoginForm()}
 						{!showLoginForm && showSecurityForm && this.displaySecurityForm()}
+						{!showLoginForm && !showSecurityForm && showChangePassForm && this.displayChangePasswordForm()}
 					</div>
 				</div>
 			</div>
