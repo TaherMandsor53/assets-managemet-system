@@ -62,7 +62,7 @@ class LoginForm extends Component {
 		const { passValue, emailValue } = this.state;
 
 		if (userDetailsData[0].email === emailValue && userDetailsData[0].password === passValue) {
-			this.setState({ errorCheck: false, loginErrorMessage: '', emailValue: '', passValue: '', loggedIn: true });
+			window.location.replace('http://localhost:9191/home');
 		} else {
 			this.setState({
 				errorCheck: true,
