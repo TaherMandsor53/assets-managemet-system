@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import Store from './store/Store';
 import Home from './components/Home';
 import LoginDetailsContainer from './container/LoginDetailsContainer';
+import AssetsDetailsContainer from './container/AssetsDetailsContainer';
 
 class App extends Component {
 	render() {
@@ -12,7 +13,7 @@ class App extends Component {
 				<Provider store={Store}>
 					<Router>
 						<Route exact path="/login" component={LoginDetailsContainer}></Route>
-						<Route exact path="/home" component={Home}></Route>
+						<Route exact path="/home" component={AssetsDetailsContainer}></Route>
 					</Router>
 				</Provider>
 			</div>

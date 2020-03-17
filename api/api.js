@@ -12,7 +12,13 @@ const updatePasswordDetails = password => {
 	return axios.put(URL, { password });
 };
 
+const fetchProductTypeDetails = () => {
+	const URL = `${baseURL}getProductTypeDetails`;
+	return axios.get(URL);
+};
+
 export default {
 	fetchUserDetails,
 	updatePasswordDetails,
+	fetchProductTypeDetails,
 };

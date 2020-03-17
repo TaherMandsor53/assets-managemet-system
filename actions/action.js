@@ -12,3 +12,9 @@ export function updatePasswordDetails(passVal) {
 		passVal,
 	};
 }
+
+export function requestProductTypeDetails() {
+	return {
+		type: types.PRODUCT_TYPE_DETAILS_REQUEST,
+	};
+}

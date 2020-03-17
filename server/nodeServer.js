@@ -59,6 +59,18 @@ app.put('/api/UserDetails/passUpdate', (req, res) => {
 	});
 });
 
+//get Product Type Details
+app.get('/api/getProductTypeDetails', (req, res) => {
+	const FETCH_PRODUCT_TYPE = `SELECT * FROM ProductTypeDetails`;
+	connection.query(FETCH_PRODUCT_TYPE, (err, result) => {
+		if (err) {
+			return res.send(err);
+		} else {
+			return res.json({ data: result });
+		}
+	});
+});
+
 app.listen(8080, () => {
 	console.log('Example app listening on port 8080');
 });
