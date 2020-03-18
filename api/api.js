@@ -17,8 +17,20 @@ const fetchProductTypeDetails = () => {
 	return axios.get(URL);
 };
 
+const insertProductDetails = (productId, productTypeId, productDate, productName, price) => {
+	const URL = `${baseURL}postProductDetails`;
+	return axios.post(URL, { productId, productTypeId, productDate, productName, price });
+};
+
+const fetchProductDetails = () => {
+	const URL = `${baseURL}getProductDetails`;
+	return axios.get(URL);
+};
+
 export default {
 	fetchUserDetails,
 	updatePasswordDetails,
 	fetchProductTypeDetails,
+	insertProductDetails,
+	fetchProductDetails,
 };

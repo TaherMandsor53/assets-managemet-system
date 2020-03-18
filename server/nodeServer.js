@@ -71,6 +71,35 @@ app.get('/api/getProductTypeDetails', (req, res) => {
 	});
 });
 
+//Insert (Post) product details
+app.post('/api/postProductDetails', (req, res) => {
+	let productId = '"' + req.body.productId + '"';
+	let productTypeId = '"' + req.body.productTypeId + '"';
+	let productDate = '"' + req.body.productDate + '"';
+	let productName = '"' + req.body.productName + '"';
+	let price = '"' + req.body.price + '"';
+	const INSERT_PRODUCT_DETAILS = `INSERT INTO ProductDetails(productId,productName,productTypeId,price,productDate)VALUES(${productId},${productName},${productTypeId},${price},${productDate})`;
+	connection.query(INSERT_PRODUCT_DETAILS, (err, result) => {
+		if (err) {
+			res.send(err);
+		} else {
+			res.send('Product details added successfully');
+		}
+	});
+});
+
+//Display all Product details
+app.get('/api/getProductDetails', (req, res) => {
+	const SELECT_PRODUCT_DETAILS = `SELECT * FROM ProductDetails`;
+	connection.query(SELECT_PRODUCT_DETAILS, (err, result) => {
+		if (err) {
+			res.send(err);
+		} else {
+			res.json({ data: result });
+		}
+	});
+});
+
 app.listen(8080, () => {
 	console.log('Example app listening on port 8080');
 });
