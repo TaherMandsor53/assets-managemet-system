@@ -28,3 +28,7 @@ You will also see any lint errors in the console.
 ### `Change Password Screen`
 
 ![Alt Text](https://github.com/TaherMandsor53/assets-managemet-system/blob/master/assets/ChangePassScreen.png)
+
+### `Product Details Tab`
+
+![Alt Text](https://github.com/TaherMandsor53/assets-managemet-system/blob/master/assets/ProductDetails.png)
