@@ -4,6 +4,7 @@ import SingleCalendar from 'react-date-picker-range';
 import transform from '../../utils/transform';
 import moment from 'moment';
 import DataTable from '../common-components/DataTable';
+import columnConstant from '../../constants/constants';
 
 class ProductDetails extends React.Component {
 	constructor(props) {
@@ -30,7 +31,7 @@ class ProductDetails extends React.Component {
 	componentDidMount() {
 		const { requestProductTypeDetails, requestProductDetails } = this.props;
 		requestProductTypeDetails();
-		requestProductDetails();
+		requestProductDetails(); //fetching product Details
 	}
 
 	onProductIdChange = event => {
@@ -141,6 +142,11 @@ class ProductDetails extends React.Component {
 				idErrorCheck: false,
 				idErrorLabel: '',
 				allErrorLabel: '',
+				productIdVal: '',
+				productTypeVal: '',
+				productNameVal: '',
+				productDateVal: '',
+				productPriceVal: '',
 			});
 
 			const { productIdVal, productTypeVal, productDateVal, productNameVal, productPriceVal } = this.state;
@@ -188,10 +194,12 @@ class ProductDetails extends React.Component {
 			priceErrorCheck,
 			priceErrorLabel,
 		} = this.state;
-		const { productTypeDetails } = this.props;
+
+		const { productTypeDetails, productDetails } = this.props;
 		const transformProductType = transform.transformProductType(productTypeDetails.data);
-		console.log('productDetails:', this.props.productDetails.data);
-		const productDetailsColumnHeader = ['Product Id', 'Product Type', 'Product Date', 'Product Name', 'Price'];
+		console.log('productDetails:', productDetails);
+		let transformProductDetails = transform.transformProductDetails(productDetails, transformProductType);
+		console.log('Transform PD details:', transformProductDetails);
 		return (
 			<div className="as-product-details">
 				<div className="all-error-label">{allErrorLabel}</div>
@@ -236,7 +244,10 @@ class ProductDetails extends React.Component {
 						Cancel
 					</button>
 				</div>
-				<DataTable columnHeader={productDetailsColumnHeader} />
+				<DataTable
+					columnHeader={columnConstant.productDetailsColumnHeader}
+					tableData={transformProductDetails}
+				/>
 			</div>
 		);
 	}

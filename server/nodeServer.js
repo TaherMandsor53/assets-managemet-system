@@ -90,7 +90,7 @@ app.post('/api/postProductDetails', (req, res) => {
 
 //Display all Product details
 app.get('/api/getProductDetails', (req, res) => {
-	const SELECT_PRODUCT_DETAILS = `SELECT * FROM ProductDetails`;
+	const SELECT_PRODUCT_DETAILS = `SELECT productId,productTypeId,productName,productDate,price FROM ProductDetails`;
 	connection.query(SELECT_PRODUCT_DETAILS, (err, result) => {
 		if (err) {
 			res.send(err);

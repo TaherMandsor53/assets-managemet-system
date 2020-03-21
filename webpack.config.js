@@ -22,6 +22,8 @@ module.exports = {
 				loader: 'file-loader',
 				options: {
 					name: '[path][name].[ext]',
+					plugins: ['lodash'],
+					presets: [['env', { modules: false, targets: { node: 4 } }]],
 				},
 			},
 			{

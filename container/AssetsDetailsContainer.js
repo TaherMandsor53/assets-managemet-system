@@ -6,7 +6,7 @@ import Home from '../components/Home';
 const mapStateToProps = state => ({
 	productTypeDetails: state.productTypeDetails.productTypeDetailsData,
 	insertProductDetails: state.insertProductDetails.insertProductDetailsData,
-	productDetails: state.productDetails.productDetailsData,
+	productDetails: state.productDetails.productDetailsData.data,
 });
 
 const mapDispatchToProps = dispatch =>

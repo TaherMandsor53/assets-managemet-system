@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const transformProductType = data => {
 	return (
 		data &&
@@ -10,6 +12,22 @@ const transformProductType = data => {
 	);
 };
 
+const transformProductDetails = (pdData, pdTypeData) => {
+	return (
+		pdData &&
+		pdData.map(item => {
+			return {
+				pId: item.productId,
+				pType: pdTypeData.find(data => data.value === item.productTypeId).text,
+				pName: item.productName,
+				pDate: moment(item.productDate).format('DD-MMM-YYYY'),
+				price: item.price,
+			};
+		})
+	);
+};
+
 export default {
 	transformProductType,
+	transformProductDetails,
 };
