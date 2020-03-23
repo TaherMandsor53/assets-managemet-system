@@ -35,4 +35,4 @@ You will also see any lint errors in the console.
 
 ### `Purchase Details Tab`
 
-![Alt Text](https://github.com/TaherMandsor53/assets-managemet-system/blob/master/assets/PurchaseDetails.png)
+![Alt Text](https://github.com/TaherMandsor53/assets-managemet-system/blob/master/assets/purchaseDetails.png)
