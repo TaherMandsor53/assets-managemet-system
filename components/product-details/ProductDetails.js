@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Input, Dropdown } from 'semantic-ui-react';
 import SingleCalendar from 'react-date-picker-range';
 import transform from '../../utils/transform';
@@ -29,9 +29,9 @@ class ProductDetails extends React.Component {
 	}
 
 	componentDidMount() {
-		const { requestProductTypeDetails, requestProductDetails } = this.props;
-		requestProductTypeDetails();
+		const { requestProductDetails, requestProductTypeDetails } = this.props;
 		requestProductDetails(); //fetching product Details
+		requestProductTypeDetails(); // fetching Product Type details
 	}
 
 	onProductIdChange = event => {
@@ -196,45 +196,45 @@ class ProductDetails extends React.Component {
 		} = this.state;
 
 		const { productTypeDetails, productDetails } = this.props;
-		const transformProductType = transform.transformProductType(productTypeDetails.data);
-		console.log('productDetails:', productDetails);
+		const transformProductType = transform.transformProductType(productTypeDetails);
 		let transformProductDetails = transform.transformProductDetails(productDetails, transformProductType);
-		console.log('Transform PD details:', transformProductDetails);
 		return (
-			<div className="as-product-details">
-				<div className="all-error-label">{allErrorLabel}</div>
+			<Fragment>
+				<div className="as-product-details">
+					<div className="all-error-label">{allErrorLabel}</div>
 
-				<div className="product-id">
-					<p className="id-text">Product Id</p>
-					<Input onChange={this.onProductIdChange} value={productIdVal} error={idErrorCheck} />
-					<span className="error-label">{idErrorLabel}</span>
-				</div>
-				<div className="product-type">
-					<p className="type-text">Product Type</p>
-					<Dropdown
-						options={transformProductType}
-						selection
-						placeholder="Product Category"
-						onChange={this.onProductTypeChange}
-						value={productTypeVal}
-						error={typeErrorCheck}
-					/>
-					<span className="error-label">{typeErrorLabel}</span>
-				</div>
-				<div className="product-date">
-					<p className="date-text">Product date</p>
-					<SingleCalendar value={productDateVal} onChangeDate={this.onProductDateChange} />
-					<span className="error-label">{dateErrorLabel}</span>
-				</div>
-				<div className="product-name">
-					<p className="name-text">Product Name</p>
-					<Input onChange={this.onProductNameChange} value={productNameVal} error={nameErrorCheck} />
-					<span className="error-label">{nameErrorLabel}</span>
-				</div>
-				<div className="product-price">
-					<p className="price-text">Price</p>
-					<Input onChange={this.onProductPriceChange} value={productPriceVal} error={priceErrorCheck} />
-					<span className="error-label">{priceErrorLabel}</span>
+					<div className="product-id">
+						<p className="id-text">Product Id</p>
+						<Input onChange={this.onProductIdChange} value={productIdVal} error={idErrorCheck} />
+						<span className="error-label">{idErrorLabel}</span>
+					</div>
+					<div className="product-type">
+						<p className="type-text">Product Type</p>
+						<Dropdown
+							options={transformProductType}
+							selection
+							placeholder="Product Category"
+							onChange={this.onProductTypeChange}
+							value={productTypeVal}
+							error={typeErrorCheck}
+						/>
+						<span className="error-label">{typeErrorLabel}</span>
+					</div>
+					<div className="product-date">
+						<p className="date-text">Product date</p>
+						<SingleCalendar value={productDateVal} onChangeDate={this.onProductDateChange} />
+						<span className="error-label">{dateErrorLabel}</span>
+					</div>
+					<div className="product-name">
+						<p className="name-text">Product Name</p>
+						<Input onChange={this.onProductNameChange} value={productNameVal} error={nameErrorCheck} />
+						<span className="error-label">{nameErrorLabel}</span>
+					</div>
+					<div className="product-price">
+						<p className="price-text">Price</p>
+						<Input onChange={this.onProductPriceChange} value={productPriceVal} error={priceErrorCheck} />
+						<span className="error-label">{priceErrorLabel}</span>
+					</div>
 				</div>
 				<div>
 					<button className="btn-submit" onClick={this.onSubmitClick}>
@@ -248,7 +248,7 @@ class ProductDetails extends React.Component {
 					columnHeader={columnConstant.productDetailsColumnHeader}
 					tableData={transformProductDetails}
 				/>
-			</div>
+			</Fragment>
 		);
 	}
 }

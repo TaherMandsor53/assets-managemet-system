@@ -16,6 +16,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"@babel/runtime": "^7.8.7",
+		"antd": "^3.26.14",
 		"axios": "^0.19.2",
 		"body-parser": "^1.19.0",
 		"cors": "^2.8.5",

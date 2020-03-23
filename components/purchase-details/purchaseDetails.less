@@ -1,0 +1,69 @@
+.purchase-details {
+	display: flex;
+	margin-top: 40px;
+	.purchase-details-form {
+		display: flex;
+		.pd-part1,
+		.pd-part2 {
+			display: flex;
+			.purchase-labels-part1,
+			.purchase-labels-part2 {
+				padding-right: 40px;
+				.plabel {
+					font-weight: 600;
+					margin-bottom: 20px;
+					color: #755139ff;
+				}
+			}
+			.purchase-text-part1,
+			.purchase-text-part2 {
+				.ptextbox {
+					margin-bottom: 20px;
+					height: 38px;
+					width: 250px;
+					border: 1px solid #bebebe;
+					padding-left: 10px;
+				}
+				.ui.selection.dropdown.pdropdown {
+					margin-bottom: 20px;
+				}
+			}
+		}
+		.pd-part1 {
+			.purchase-labels-part1 {
+				width: 145px;
+				.plabel {
+					line-height: 38px;
+				}
+				.purchase-btn {
+					width: 250px;
+				}
+			}
+		}
+		.pd-part2 {
+			.purchase-labels-part2 {
+				margin-left: 100px;
+				.plabel {
+					line-height: 38px;
+				}
+			}
+			.purchase-text-part2 {
+				label.cash-text,
+				label.cashless-text {
+					margin-left: 8px;
+					margin-right: 15px;
+					font-weight: 600;
+					margin-bottom: 20px;
+					color: #755139ff;
+					vertical-align: text-bottom;
+				}
+				.payment-mode {
+					height: 38px;
+					border: 1px solid #bebebe;
+					padding: 8px;
+					margin-bottom: 20px;
+				}
+			}
+		}
+	}
+}

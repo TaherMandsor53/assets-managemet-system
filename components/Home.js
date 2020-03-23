@@ -2,6 +2,7 @@ import React from 'react';
 import { Segment, Icon, Tab } from 'semantic-ui-react';
 import CardComponent from './common-components/CardComponent';
 import ProductDetails from './product-details/ProductDetails';
+import PurchaseDetails from './purchase-details/PurchaseDetails';
 
 class Home extends React.Component {
 	constructor(props) {
@@ -25,7 +26,7 @@ class Home extends React.Component {
 			},
 			{
 				menuItem: 'Purchase Details',
-				render: () => <Tab.Pane attached={false}>Purchase Details Content</Tab.Pane>,
+				render: () => <PurchaseDetails {...this.props} />,
 			},
 			{
 				menuItem: 'Sales Details',

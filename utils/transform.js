@@ -18,7 +18,7 @@ const transformProductDetails = (pdData, pdTypeData) => {
 		pdData.map(item => {
 			return {
 				pId: item.productId,
-				pType: pdTypeData.find(data => data.value === item.productTypeId).text,
+				pType: pdTypeData && pdTypeData.find(data => data.value === item.productTypeId).text,
 				pName: item.productName,
 				pDate: moment(item.productDate).format('DD-MMM-YYYY'),
 				price: item.price,
@@ -27,7 +27,20 @@ const transformProductDetails = (pdData, pdTypeData) => {
 	);
 };
 
+const transformFilterProduct = data => {
+	return (
+		data &&
+		data.map(item => {
+			return {
+				text: item.productName,
+				value: item.productId,
+			};
+		})
+	);
+};
+
 export default {
 	transformProductType,
 	transformProductDetails,
+	transformFilterProduct,
 };

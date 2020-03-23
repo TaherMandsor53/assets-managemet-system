@@ -2,7 +2,6 @@ const productDetailsColumnHeader = [
 	{
 		id: 'pId',
 		value: 'Product Id',
-		defaultSort: 'ascending',
 	},
 	{
 		id: 'pType',

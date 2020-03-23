@@ -4,7 +4,7 @@ import { requestProductTypeDetails, insertProductDetails, requestProductDetails 
 import Home from '../components/Home';
 
 const mapStateToProps = state => ({
-	productTypeDetails: state.productTypeDetails.productTypeDetailsData,
+	productTypeDetails: state.productTypeDetails.productTypeDetailsData.data,
 	insertProductDetails: state.insertProductDetails.insertProductDetailsData,
 	productDetails: state.productDetails.productDetailsData.data,
 });
