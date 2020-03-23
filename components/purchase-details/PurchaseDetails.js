@@ -9,6 +9,8 @@ class PurchaseDetails extends React.Component {
 		this.state = {
 			selectedTypeId: '',
 			purchaseDateVal: '',
+			productVal: '',
+			totalAmtVal: '',
 		};
 	}
 
@@ -20,20 +22,33 @@ class PurchaseDetails extends React.Component {
 
 	onProductTypeChange = (event, data) => {
 		this.setState({ selectedTypeId: data.value });
+		document.getElementById('quantity').value = '';
 	};
 
 	onProductDateChange = date => {
-		let formatedDate = moment(date._d).format('DD-MMM-YYYY');
-		this.setState({ purchaseDateVal: formatedDate });
+		this.setState({ purchaseDateVal: date._d });
+	};
+
+	onProductChange = (event, data) => {
+		this.setState({ productVal: data.value });
+		document.getElementById('quantity').value = '';
+	};
+
+	onQuantityChange = event => {
+		let price = document.getElementsByClassName('ptextbox-price')[0].value;
+		let totalAmount = price * event.target.value;
+		this.setState({ totalAmtVal: totalAmount });
 	};
 
 	render() {
 		const { productTypeDetails, productDetails } = this.props;
-		const { selectedTypeId, purchaseDateVal } = this.state;
+		const { selectedTypeId, purchaseDateVal, productVal, totalAmtVal } = this.state;
 		const transformProductTypeDetails = transform.transformProductType(productTypeDetails && productTypeDetails);
 		console.log('Product Details:', productDetails);
 		let productFilter = productDetails && productDetails.filter(item => item.productTypeId === selectedTypeId);
 		const transformFilterProduct = transform.transformFilterProduct(productFilter);
+		let productPrice = productFilter && productFilter.find(item => item.productId === productVal);
+
 		return (
 			<Fragment>
 				<div className="purchase-details">
@@ -72,6 +87,7 @@ class PurchaseDetails extends React.Component {
 									options={transformFilterProduct}
 									placeholder="Product"
 									className="pdropdown"
+									onChange={this.onProductChange}
 								/>
 								<br />
 								<DatePicker
@@ -90,10 +106,28 @@ class PurchaseDetails extends React.Component {
 								<p className="plabel">Transaction Id</p>
 							</div>
 							<div className="purchase-text-part2">
-								<input className="ptextbox" required type="text" /> <br />
-								<input className="ptextbox" required type="text" />
+								<input
+									className="ptextbox"
+									required
+									type="text"
+									onChange={this.onQuantityChange}
+									pattern="[\d]{9}"
+									id="quantity"
+								/>
 								<br />
-								<input className="ptextbox" required type="text" />
+								<input
+									className="ptextbox-price"
+									type="text"
+									value={productPrice ? productPrice.price : ''}
+									readOnly
+								/>
+								<br />
+								<input
+									className="ptextbox-total"
+									type="text"
+									readOnly
+									value={totalAmtVal ? totalAmtVal : ''}
+								/>
 								<div className="payment-mode">
 									<input
 										type="radio"
