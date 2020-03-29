@@ -100,6 +100,38 @@ app.get('/api/getProductDetails', (req, res) => {
 	});
 });
 
+//Insert Purchase Details
+app.post('/api/postPurchaseDetails', (req, res) => {
+	let purchaseId = '"' + req.body.purchaseId + '"';
+	let productId = '"' + req.body.productId + '"';
+	let quantity = '"' + req.body.quantity + '"';
+	let totalAmount = '"' + req.body.totalAmount + '"';
+	let vendorName = '"' + req.body.vendorName + '"';
+	let modeOfTransaction = '"' + req.body.modeOfTransaction + '"';
+	let transactionId = '"' + req.body.transactionId + '"';
+	let purchaseDate = '"' + req.body.purchaseDate + '"';
+	const INSERT_PURCHASE_DETAILS = `INSERT INTO PurchaseDetails(purchaseId,productId,quantity,totalAmount,vendorName,modeOfTransaction,transactionId,purchaseDate)VALUES(${purchaseId},${productId},${quantity},${totalAmount},${vendorName},${modeOfTransaction},${transactionId},${purchaseDate})`;
+	connection.query(INSERT_PURCHASE_DETAILS, (err, result) => {
+		if (err) {
+			res.send(err);
+		} else {
+			res.send('Purchase details added successfully');
+		}
+	});
+});
+
+//Display all Purchase details
+app.get('/api/getPurchaseDetails', (req, res) => {
+	const SELECT_PURCHASE_DETAILS = `SELECT * FROM PurchaseDetails`;
+	connection.query(SELECT_PURCHASE_DETAILS, (err, result) => {
+		if (err) {
+			res.send(err);
+		} else {
+			res.json({ data: result });
+		}
+	});
+});
+
 app.listen(8080, () => {
 	console.log('Example app listening on port 8080');
 });

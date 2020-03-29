@@ -35,3 +35,32 @@ export function requestProductDetails() {
 		type: types.DISPLAY_PRODUCT_DETAILS_REQUEST,
 	};
 }
+
+export function insertPurchaseDetails(
+	purchaseId,
+	productId,
+	quantity,
+	totalAmount,
+	vendorName,
+	modeOfTransaction,
+	transactionId,
+	purchaseDate,
+) {
+	return {
+		type: types.INSERT_PURCHASE_DETAILS_REQUEST,
+		purchaseId,
+		productId,
+		quantity,
+		totalAmount,
+		vendorName,
+		modeOfTransaction,
+		transactionId,
+		purchaseDate,
+	};
+}
+
+export function requestPurchaseDetails() {
+	return {
+		type: types.DISPLAY_PURCHASE_DETAILS_REQUEST,
+	};
+}

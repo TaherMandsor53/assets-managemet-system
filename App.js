@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import Store from './store/Store';
-import Home from './components/Home';
 import LoginDetailsContainer from './container/LoginDetailsContainer';
 import AssetsDetailsContainer from './container/AssetsDetailsContainer';
 

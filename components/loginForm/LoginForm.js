@@ -163,7 +163,6 @@ class LoginForm extends Component {
 	onPassSubmitClick() {
 		const { updatePasswordDetails } = this.props;
 		if (this.state.newPassVal === this.state.confirmPassVal) {
-			console.log('Matches');
 			updatePasswordDetails(this.state.newPassVal);
 			this.setState({ errorCheck: false, showPassMessage: true, confirmPassVal: '', newPassVal: '' });
 		} else {
@@ -179,7 +178,6 @@ class LoginForm extends Component {
 
 	// show Change password form
 	displayChangePasswordForm() {
-		console.log(this.state.showPassMessage);
 		let successMessageContent =
 			'Please login with your new credentials <br/> <a href="http://localhost:9191/login">Click here to Login</a>';
 		return (

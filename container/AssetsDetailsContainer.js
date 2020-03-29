@@ -1,12 +1,20 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { requestProductTypeDetails, insertProductDetails, requestProductDetails } from '../actions/action';
+import {
+	requestProductTypeDetails,
+	insertProductDetails,
+	requestProductDetails,
+	insertPurchaseDetails,
+	requestPurchaseDetails,
+} from '../actions/action';
 import Home from '../components/Home';
 
 const mapStateToProps = state => ({
 	productTypeDetails: state.productTypeDetails.productTypeDetailsData.data,
 	insertProductDetails: state.insertProductDetails.insertProductDetailsData,
 	productDetails: state.productDetails.productDetailsData.data,
+	insertPurchaseDetails: state.insertPurchaseDetails.insertPurchaseDetailsData.data,
+	purchaseDetails: state.purchaseDetails.purchaseDetailsData.data,
 });
 
 const mapDispatchToProps = dispatch =>
@@ -15,6 +23,8 @@ const mapDispatchToProps = dispatch =>
 			requestProductTypeDetails,
 			insertProductDetails,
 			requestProductDetails,
+			insertPurchaseDetails,
+			requestPurchaseDetails,
 		},
 		dispatch,
 	);

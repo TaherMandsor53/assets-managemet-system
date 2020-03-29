@@ -1,4 +1,5 @@
 import moment from 'moment';
+import PurchaseDetails from '../components/purchase-details/PurchaseDetails';
 
 const transformProductType = data => {
 	return (
@@ -39,8 +40,11 @@ const transformFilterProduct = data => {
 	);
 };
 
+const transformPurchaseDetails = (purDetails, proDetails) => {};
+
 export default {
 	transformProductType,
 	transformProductDetails,
 	transformFilterProduct,
+	transformPurchaseDetails,
 };

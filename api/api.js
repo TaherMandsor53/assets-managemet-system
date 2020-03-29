@@ -27,10 +27,40 @@ const fetchProductDetails = () => {
 	return axios.get(URL);
 };
 
+const insertPurchaseDetails = (
+	purchaseId,
+	productId,
+	quantity,
+	totalAmount,
+	vendorName,
+	modeOfTransaction,
+	transactionId,
+	purchaseDate,
+) => {
+	const URL = `${baseURL}postPurchaseDetails`;
+	return axios.post(URL, {
+		purchaseId,
+		productId,
+		quantity,
+		totalAmount,
+		vendorName,
+		modeOfTransaction,
+		transactionId,
+		purchaseDate,
+	});
+};
+
+const fetchPurchaseDetails = () => {
+	const URL = `${baseURL}getPurchaseDetails`;
+	return axios.get(URL);
+};
+
 export default {
 	fetchUserDetails,
 	updatePasswordDetails,
 	fetchProductTypeDetails,
 	insertProductDetails,
 	fetchProductDetails,
+	insertPurchaseDetails,
+	fetchPurchaseDetails,
 };
