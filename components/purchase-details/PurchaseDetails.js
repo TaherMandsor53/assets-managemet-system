@@ -3,6 +3,8 @@ import { Dropdown } from 'semantic-ui-react';
 import transform from '../../utils/transform';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import columnConstant from '../../constants/constants';
+import DataTable from '../common-components/DataTable';
 
 class PurchaseDetails extends React.Component {
 	constructor(props) {
@@ -136,8 +138,8 @@ class PurchaseDetails extends React.Component {
 		//Purchase Details Table
 		console.log('Purchase Details:', purchaseDetails);
 
-		console.log('Product Details:', transformFilterProduct);
-		const transformPurchaseDetails = transform.transformPurchaseDetails(purchaseDetails, transformFilterProduct);
+		console.log('Product Details:', productDetails);
+		const transformPurchaseDetails = transform.transformPurchaseDetails(purchaseDetails, productDetails);
 		console.log('Transform Purchase Details:', transformPurchaseDetails);
 		return (
 			<Fragment>
@@ -274,6 +276,11 @@ class PurchaseDetails extends React.Component {
 						</div>
 					</form>
 				</div>
+				<DataTable
+					columnHeader={columnConstant.purchaseDetailsColumnHeader}
+					tableData={transformPurchaseDetails}
+					showIconId="purchaseId"
+				/>
 			</Fragment>
 		);
 	}

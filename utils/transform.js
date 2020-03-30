@@ -40,7 +40,22 @@ const transformFilterProduct = data => {
 	);
 };
 
-const transformPurchaseDetails = (purDetails, proDetails) => {};
+const transformPurchaseDetails = (purDetails, proDetails) => {
+	return (
+		purDetails &&
+		purDetails.map(item => {
+			return {
+				purchaseId: item.purchaseId,
+				vName: item.vendorName,
+				pName: proDetails && proDetails.find(data => data.productId === item.productId).productName,
+				pDate: moment(item.purchaseDate).format('DD-MMM-YYYY'),
+				quantity: item.quantity,
+				price: proDetails && proDetails.find(data => data.productId === item.productId).price,
+				payType: item.modeOfTransaction === 1 ? 'Cash/Cheque' : 'Cashless',
+			};
+		})
+	);
+};
 
 export default {
 	transformProductType,
