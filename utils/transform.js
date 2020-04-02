@@ -51,7 +51,7 @@ const transformPurchaseDetails = (purDetails, proDetails) => {
 				pDate: moment(item.purchaseDate).format('DD-MMM-YYYY'),
 				quantity: item.quantity,
 				price: proDetails && proDetails.find(data => data.productId === item.productId).price,
-				payType: item.modeOfTransaction === 1 ? 'Cash/Cheque' : 'Cashless',
+				payType: item.modeOfTransaction === '1' ? 'Cash/Cheque' : 'Cashless',
 			};
 		})
 	);

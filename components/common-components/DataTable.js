@@ -43,7 +43,7 @@ class DataTable extends React.Component {
 
 	render() {
 		const { data, direction, column } = this.state;
-		const { columnHeader, showIconId } = this.props;
+		const { columnHeader, showIcon } = this.props;
 		return (
 			<div className="datatable">
 				<Table celled sortable>
@@ -56,7 +56,7 @@ class DataTable extends React.Component {
 											sorted={
 												column === item.id
 													? direction
-													: item.id === showIconId
+													: item.id === showIcon
 													? 'ascending'
 													: null
 											}

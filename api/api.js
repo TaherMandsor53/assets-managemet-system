@@ -55,6 +55,36 @@ const fetchPurchaseDetails = () => {
 	return axios.get(URL);
 };
 
+const insertSalesDetails = (
+	salesId,
+	productId,
+	quantity,
+	totalAmount,
+	customerName,
+	salesDate,
+	customerType,
+	modeOfTransaction,
+	transactionId,
+) => {
+	const URL = `${baseURL}postSalesDetails`;
+	return axios.post(URL, {
+		salesId,
+		productId,
+		quantity,
+		totalAmount,
+		customerName,
+		salesDate,
+		customerType,
+		modeOfTransaction,
+		transactionId,
+	});
+};
+
+const fetchSalesDetails = () => {
+	const URL = `${baseURL}getSalesDetails`;
+	return axios.get(URL);
+};
+
 export default {
 	fetchUserDetails,
 	updatePasswordDetails,
@@ -63,4 +93,6 @@ export default {
 	fetchProductDetails,
 	insertPurchaseDetails,
 	fetchPurchaseDetails,
+	insertSalesDetails,
+	fetchSalesDetails,
 };

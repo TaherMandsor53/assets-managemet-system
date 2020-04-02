@@ -3,6 +3,7 @@ import { Segment, Icon, Tab } from 'semantic-ui-react';
 import CardComponent from './common-components/CardComponent';
 import ProductDetails from './product-details/ProductDetails';
 import PurchaseDetails from './purchase-details/PurchaseDetails';
+import SalesDetails from './sales-details/SalesDetails';
 
 class Home extends React.Component {
 	constructor(props) {
@@ -30,7 +31,7 @@ class Home extends React.Component {
 			},
 			{
 				menuItem: 'Sales Details',
-				render: () => <Tab.Pane attached={false}>Sales Details Content</Tab.Pane>,
+				render: () => <SalesDetails {...this.props} />,
 			},
 			{
 				menuItem: 'Stock Details',

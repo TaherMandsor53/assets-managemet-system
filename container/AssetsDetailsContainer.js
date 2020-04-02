@@ -6,6 +6,8 @@ import {
 	requestProductDetails,
 	insertPurchaseDetails,
 	requestPurchaseDetails,
+	insertSalesDetails,
+	requestSalesDetails,
 } from '../actions/action';
 import Home from '../components/Home';
 
@@ -15,6 +17,8 @@ const mapStateToProps = state => ({
 	productDetails: state.productDetails.productDetailsData.data,
 	insertPurchaseDetails: state.insertPurchaseDetails.insertPurchaseDetailsData.data,
 	purchaseDetails: state.purchaseDetails.purchaseDetailsData.data,
+	insertSalesDetails: state.insertSalesDetails.insertSalesDetailsData.data,
+	salesDetails: state.salesDetails.salesDetailsData.data,
 });
 
 const mapDispatchToProps = dispatch =>
@@ -25,6 +29,8 @@ const mapDispatchToProps = dispatch =>
 			requestProductDetails,
 			insertPurchaseDetails,
 			requestPurchaseDetails,
+			insertSalesDetails,
+			requestSalesDetails,
 		},
 		dispatch,
 	);

@@ -279,7 +279,7 @@ class PurchaseDetails extends React.Component {
 				<DataTable
 					columnHeader={columnConstant.purchaseDetailsColumnHeader}
 					tableData={transformPurchaseDetails}
-					showIconId="purchaseId"
+					showIcon="purchaseId"
 				/>
 			</Fragment>
 		);

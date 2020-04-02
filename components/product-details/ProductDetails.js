@@ -247,7 +247,7 @@ class ProductDetails extends React.Component {
 				<DataTable
 					columnHeader={columnConstant.productDetailsColumnHeader}
 					tableData={transformProductDetails}
-					showIconId="pId"
+					showIcon="pId"
 				/>
 			</Fragment>
 		);

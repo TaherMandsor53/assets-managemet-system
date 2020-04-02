@@ -64,3 +64,34 @@ export function requestPurchaseDetails() {
 		type: types.DISPLAY_PURCHASE_DETAILS_REQUEST,
 	};
 }
+
+export function insertSalesDetails(
+	salesId,
+	productId,
+	quantity,
+	totalAmount,
+	customerName,
+	salesDate,
+	customerType,
+	modeOfTransaction,
+	transactionId,
+) {
+	return {
+		type: types.INSERT_SALES_DETAILS_REQUEST,
+		salesId,
+		productId,
+		quantity,
+		totalAmount,
+		customerName,
+		salesDate,
+		customerType,
+		modeOfTransaction,
+		transactionId,
+	};
+}
+
+export function requestSalesDetails() {
+	return {
+		type: types.DISPLAY_SALES_DETAILS_REQUEST,
+	};
+}

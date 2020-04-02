@@ -132,6 +132,40 @@ app.get('/api/getPurchaseDetails', (req, res) => {
 	});
 });
 
+//Insert Sales Details
+app.post('/api/postSalesDetails', (req, res) => {
+	let salesId = '"' + req.body.salesId + '"';
+	let productId = '"' + req.body.productId + '"';
+	let quantity = '"' + req.body.quantity + '"';
+	let totalAmount = '"' + req.body.totalAmount + '"';
+	let customerName = '"' + req.body.customerName + '"';
+	let salesDate = '"' + req.body.salesDate + '"';
+	let customerType = '"' + req.body.customerType + '"';
+	let modeOfTransaction = '"' + req.body.modeOfTransaction + '"';
+	let transactionId = '"' + req.body.transactionId + '"';
+
+	const INSERT_SALES_DETAILS = `INSERT INTO SalesDetails(salesId,productId,quantity,totalAmount,customerName,salesDate,customerType,modeOfTransaction,transactionId)VALUES(${salesId},${productId},${quantity},${totalAmount},${customerName},${salesDate},${customerType},${modeOfTransaction},${transactionId})`;
+	connection.query(INSERT_SALES_DETAILS, (err, result) => {
+		if (err) {
+			res.send(err);
+		} else {
+			res.send('Sales details added successfully');
+		}
+	});
+});
+
+//Display all sales details
+app.get('/api/getSalesDetails', (req, res) => {
+	const SELECT_SALES_DETAILS = `SELECT * FROM SalesDetails`;
+	connection.query(SELECT_SALES_DETAILS, (err, result) => {
+		if (err) {
+			res.send(err);
+		} else {
+			res.json({ data: result });
+		}
+	});
+});
+
 app.listen(8080, () => {
 	console.log('Example app listening on port 8080');
 });
