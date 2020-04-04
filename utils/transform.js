@@ -57,9 +57,28 @@ const transformPurchaseDetails = (purDetails, proDetails) => {
 	);
 };
 
+const transformSalesDetails = (salesDetails, proDetails) => {
+	return (
+		salesDetails &&
+		salesDetails.map(item => {
+			return {
+				custType: item.customerType === '1' ? 'Registered' : 'Unregistered',
+				salesId: item.salesId,
+				custName: item.customerName,
+				pName: proDetails && proDetails.find(data => data.productId === item.productId).productName,
+				sDate: moment(item.salesDate).format('DD-MMM-YYYY'),
+				quantity: item.quantity,
+				price: proDetails && proDetails.find(data => data.productId === item.productId).price,
+				payType: item.modeOfTransaction === '1' ? 'Cash/Cheque' : 'Cashless',
+			};
+		})
+	);
+};
+
 export default {
 	transformProductType,
 	transformProductDetails,
 	transformFilterProduct,
 	transformPurchaseDetails,
+	transformSalesDetails,
 };

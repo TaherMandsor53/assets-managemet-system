@@ -5,6 +5,7 @@ import transform from '../../utils/transform';
 import moment from 'moment';
 import DataTable from '../common-components/DataTable';
 import columnConstant from '../../constants/constants';
+import MessageComponent from '../common-components/MessageComponent';
 
 class ProductDetails extends React.Component {
 	constructor(props) {
@@ -25,6 +26,7 @@ class ProductDetails extends React.Component {
 			priceErrorCheck: false,
 			priceErrorLabel: '',
 			allErrorLabel: '',
+			modalOpen: false,
 		};
 	}
 
@@ -147,6 +149,7 @@ class ProductDetails extends React.Component {
 				productNameVal: '',
 				productDateVal: '',
 				productPriceVal: '',
+				modalOpen: true,
 			});
 
 			const { productIdVal, productTypeVal, productDateVal, productNameVal, productPriceVal } = this.state;
@@ -176,6 +179,11 @@ class ProductDetails extends React.Component {
 		});
 	};
 
+	onModalClose = () => {
+		this.setState({ modalOpen: false });
+		this.props.requestProductDetails();
+	};
+
 	render() {
 		const {
 			productIdVal,
@@ -193,6 +201,7 @@ class ProductDetails extends React.Component {
 			nameErrorLabel,
 			priceErrorCheck,
 			priceErrorLabel,
+			modalOpen,
 		} = this.state;
 
 		const { productTypeDetails, productDetails } = this.props;
@@ -248,6 +257,12 @@ class ProductDetails extends React.Component {
 					columnHeader={columnConstant.productDetailsColumnHeader}
 					tableData={transformProductDetails}
 					showIcon="pId"
+				/>
+				<MessageComponent
+					modalOpen={modalOpen}
+					modalHeader="Product Details"
+					modalContent="Product details added successfully"
+					onClose={this.onModalClose}
 				/>
 			</Fragment>
 		);

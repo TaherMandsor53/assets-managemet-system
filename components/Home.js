@@ -34,10 +34,6 @@ class Home extends React.Component {
 				render: () => <SalesDetails {...this.props} />,
 			},
 			{
-				menuItem: 'Stock Details',
-				render: () => <Tab.Pane attached={false}>Stock Details Content</Tab.Pane>,
-			},
-			{
 				menuItem: 'Staff Details',
 				render: () => <Tab.Pane attached={false}>Staff Details Content</Tab.Pane>,
 			},

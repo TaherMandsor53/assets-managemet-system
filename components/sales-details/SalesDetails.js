@@ -5,28 +5,32 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import columnConstant from '../../constants/constants';
 import DataTable from '../common-components/DataTable';
+import MessageComponent from '../common-components/MessageComponent';
 
 class SalesDetails extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			selectedTypeId: '',
-			purchaseDateVal: '',
+			salesDateVal: '',
 			productVal: '',
 			totalAmtVal: '',
-			purchaseId: '',
-			vendorName: '',
+			salesId: '',
+			customerName: '',
 			quantityVal: '',
 			paymentMode: '',
 			transactionId: '',
 			custCheck: false,
+			customerType: '',
+			modalOpen: false,
 		};
 	}
 
 	componentDidMount() {
-		const { requestProductDetails, requestProductTypeDetails, requestPurchaseDetails } = this.props;
+		const { requestProductDetails, requestProductTypeDetails, requestSalesDetails } = this.props;
 		requestProductDetails(); //fetching product Details
 		requestProductTypeDetails(); // fetching Product Type details
+		requestSalesDetails(); // fetching sales details
 	}
 
 	onProductTypeChange = (event, data) => {
@@ -35,7 +39,7 @@ class SalesDetails extends React.Component {
 	};
 
 	onProductDateChange = date => {
-		this.setState({ purchaseDateVal: date });
+		this.setState({ salesDateVal: date });
 	};
 
 	onProductChange = (event, data) => {
@@ -50,11 +54,11 @@ class SalesDetails extends React.Component {
 	};
 
 	onBillNoChange = event => {
-		this.setState({ purchaseId: event.target.value });
+		this.setState({ salesId: event.target.value });
 	};
 
-	onVendorNameChange = event => {
-		this.setState({ vendorName: event.target.value });
+	onCustomerNameChange = event => {
+		this.setState({ customerName: event.target.value });
 	};
 
 	onPaymentModeChange = event => {
@@ -69,36 +73,55 @@ class SalesDetails extends React.Component {
 		if (event.target.value === '2') {
 			document.getElementById('billNo').readOnly = true;
 			document.getElementById('custName').readOnly = true;
-			this.setState({ custCheck: true });
+			this.setState({ custCheck: true, customerType: event.target.value });
 		} else {
 			document.getElementById('billNo').readOnly = false;
 			document.getElementById('custName').readOnly = false;
-			this.setState({ custCheck: false });
+			this.setState({ custCheck: false, customerType: event.target.value });
 		}
 	};
 
+	onModalClose = () => {
+		this.setState({ modalOpen: false });
+		this.props.requestSalesDetails();
+	};
+
 	onSubmit = () => {
+		const { insertSalesDetails } = this.props;
 		const {
-			purchaseId,
-			vendorName,
+			salesId,
+			customerName,
 			productVal,
-			purchaseDateVal,
+			salesDateVal,
 			quantityVal,
 			totalAmtVal,
 			paymentMode,
 			transactionId,
+			customerType,
 		} = this.state;
-
+		let dbFormat = moment(salesDateVal).format('YYYY-MM-DD');
+		insertSalesDetails(
+			salesId,
+			productVal,
+			quantityVal,
+			totalAmtVal,
+			customerName,
+			dbFormat,
+			customerType,
+			paymentMode,
+			transactionId,
+		);
 		this.setState({
-			purchaseId: '',
+			salesId: '',
 			productVal: '',
 			quantityVal: '',
 			totalAmtVal: '',
-			vendorName: '',
+			customerName: '',
 			paymentMode: '',
 			transactionId: '',
-			purchaseDateVal: '',
+			salesDateVal: '',
 			selectedTypeId: '',
+			modalOpen: true,
 		});
 		document.getElementById('cash').checked = false;
 		document.getElementById('cashless').checked = false;
@@ -108,14 +131,14 @@ class SalesDetails extends React.Component {
 
 	onCancel = () => {
 		this.setState({
-			purchaseId: '',
+			salesId: '',
 			productVal: '',
 			quantityVal: '',
 			totalAmtVal: '',
-			vendorName: '',
+			customerName: '',
 			paymentMode: '',
 			transactionId: '',
-			purchaseDateVal: '',
+			salesDateVal: '',
 			selectedTypeId: '',
 		});
 		document.getElementById('cash').checked = false;
@@ -125,22 +148,25 @@ class SalesDetails extends React.Component {
 	};
 
 	render() {
-		const { productTypeDetails, productDetails, purchaseDetails } = this.props;
+		const { productTypeDetails, productDetails, salesDetails } = this.props;
 		const {
 			selectedTypeId,
-			purchaseDateVal,
+			salesDateVal,
 			productVal,
 			totalAmtVal,
-			vendorName,
+			customerName,
 			quantityVal,
-			purchaseId,
+			salesId,
 			transactionId,
 			custCheck,
+			modalOpen,
 		} = this.state;
 		const transformProductTypeDetails = transform.transformProductType(productTypeDetails && productTypeDetails);
 		let productFilter = productDetails && productDetails.filter(item => item.productTypeId === selectedTypeId);
 		const transformFilterProduct = transform.transformFilterProduct(productFilter);
 		let productPrice = productFilter && productFilter.find(item => item.productId === productVal);
+
+		const transformSalesDetails = transform.transformSalesDetails(salesDetails, productDetails);
 
 		return (
 			<Fragment>
@@ -190,7 +216,7 @@ class SalesDetails extends React.Component {
 										required
 										type="text"
 										onChange={this.onBillNoChange}
-										value={purchaseId}
+										value={salesId}
 										id="billNo"
 									/>
 									<br />
@@ -198,8 +224,8 @@ class SalesDetails extends React.Component {
 										className={custCheck ? 'stextbox-custName' : 'stextbox'}
 										required
 										type="text"
-										onChange={this.onVendorNameChange}
-										value={vendorName}
+										onChange={this.onCustomerNameChange}
+										value={customerName}
 										id="custName"
 									/>
 									<br />
@@ -223,7 +249,7 @@ class SalesDetails extends React.Component {
 									<br />
 									<DatePicker
 										placeholderText="Sale Date"
-										selected={purchaseDateVal}
+										selected={salesDateVal}
 										onChange={this.onProductDateChange}
 										dateFormat="d-MMM-yyyy"
 									/>
@@ -308,6 +334,17 @@ class SalesDetails extends React.Component {
 						</div>
 					</form>
 				</div>
+				<DataTable
+					columnHeader={columnConstant.salesDetailsColumnHeader}
+					tableData={transformSalesDetails}
+					showIcon="custType"
+				/>
+				<MessageComponent
+					modalOpen={modalOpen}
+					modalHeader="Sales Details"
+					modalContent="Sales details added successfully"
+					onClose={this.onModalClose}
+				/>
 			</Fragment>
 		);
 	}

@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import columnConstant from '../../constants/constants';
 import DataTable from '../common-components/DataTable';
+import MessageComponent from '../common-components/MessageComponent';
 
 class PurchaseDetails extends React.Component {
 	constructor(props) {
@@ -19,6 +20,7 @@ class PurchaseDetails extends React.Component {
 			quantityVal: '',
 			paymentMode: '',
 			transactionId: '',
+			modalOpen: false,
 		};
 	}
 
@@ -65,7 +67,14 @@ class PurchaseDetails extends React.Component {
 		this.setState({ transactionId: event.target.value });
 	};
 
+	onModalClose = () => {
+		this.setState({ modalOpen: false });
+		this.props.requestPurchaseDetails();
+	};
+
 	onSubmit = () => {
+		// document.getElementById('cash').removeAttribute('required');
+		// document.getElementById('cashless').removeAttribute('required');
 		const {
 			purchaseId,
 			vendorName,
@@ -97,7 +106,9 @@ class PurchaseDetails extends React.Component {
 			transactionId: '',
 			purchaseDateVal: '',
 			selectedTypeId: '',
+			modalOpen: true,
 		});
+
 		document.getElementById('cash').checked = false;
 		document.getElementById('cashless').checked = false;
 	};
@@ -129,18 +140,14 @@ class PurchaseDetails extends React.Component {
 			quantityVal,
 			purchaseId,
 			transactionId,
+			modalOpen,
 		} = this.state;
 		const transformProductTypeDetails = transform.transformProductType(productTypeDetails && productTypeDetails);
 		let productFilter = productDetails && productDetails.filter(item => item.productTypeId === selectedTypeId);
 		const transformFilterProduct = transform.transformFilterProduct(productFilter);
 		let productPrice = productFilter && productFilter.find(item => item.productId === productVal);
 
-		//Purchase Details Table
-		console.log('Purchase Details:', purchaseDetails);
-
-		console.log('Product Details:', productDetails);
 		const transformPurchaseDetails = transform.transformPurchaseDetails(purchaseDetails, productDetails);
-		console.log('Transform Purchase Details:', transformPurchaseDetails);
 		return (
 			<Fragment>
 				<div className="purchase-details">
@@ -161,6 +168,7 @@ class PurchaseDetails extends React.Component {
 										type="text"
 										onChange={this.onBillNoChange}
 										value={purchaseId}
+										id="pid"
 									/>
 									<br />
 									<input
@@ -169,6 +177,7 @@ class PurchaseDetails extends React.Component {
 										type="text"
 										onChange={this.onVendorNameChange}
 										value={vendorName}
+										id="vName"
 									/>
 									<br />
 									<Dropdown
@@ -280,6 +289,12 @@ class PurchaseDetails extends React.Component {
 					columnHeader={columnConstant.purchaseDetailsColumnHeader}
 					tableData={transformPurchaseDetails}
 					showIcon="purchaseId"
+				/>
+				<MessageComponent
+					modalOpen={modalOpen}
+					modalHeader="Purchase Details"
+					modalContent="Purchase details added successfully"
+					onClose={this.onModalClose}
 				/>
 			</Fragment>
 		);

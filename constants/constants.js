@@ -52,7 +52,43 @@ const purchaseDetailsColumnHeader = [
 	},
 ];
 
+const salesDetailsColumnHeader = [
+	{
+		id: 'custType',
+		value: 'Customer Type',
+	},
+	{
+		id: 'salesId',
+		value: 'Bill No',
+	},
+	{
+		id: 'custName',
+		value: 'Customer Name',
+	},
+	{
+		id: 'pName',
+		value: 'Product Name',
+	},
+	{
+		id: 'sDate',
+		value: 'Sales Date',
+	},
+	{
+		id: 'quantity',
+		value: 'Quantity',
+	},
+	{
+		id: 'price',
+		value: 'Price',
+	},
+	{
+		id: 'payType',
+		value: 'Payment Mode',
+	},
+];
+
 export default {
 	productDetailsColumnHeader,
 	purchaseDetailsColumnHeader,
+	salesDetailsColumnHeader,
 };
