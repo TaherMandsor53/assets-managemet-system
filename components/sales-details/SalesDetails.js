@@ -23,6 +23,19 @@ class SalesDetails extends React.Component {
 			custCheck: false,
 			customerType: '',
 			modalOpen: false,
+			//validation errorchecks
+			custTypeErrorLabel: '',
+			custTypeErrorCheck: false,
+			pTypeErrorLabel: '',
+			pTypeErrorCheck: false,
+			pNameErrorLabel: '',
+			pNameErrorCheck: false,
+			sDateErrorLabel: '',
+			sDateErrorCheck: false,
+			pQuantityErrorLabel: '',
+			pQuantityErrorCheck: false,
+			paymentErrorLabel: '',
+			paymentErrorCheck: false,
 		};
 	}
 
@@ -63,6 +76,9 @@ class SalesDetails extends React.Component {
 
 	onPaymentModeChange = event => {
 		this.setState({ paymentMode: event.target.value });
+		if (event.target.value) {
+			this.setState({ paymentErrorLabel: '', paymentErrorCheck: false });
+		}
 	};
 
 	onTransactionChange = event => {
@@ -73,11 +89,21 @@ class SalesDetails extends React.Component {
 		if (event.target.value === '2') {
 			document.getElementById('billNo').readOnly = true;
 			document.getElementById('custName').readOnly = true;
-			this.setState({ custCheck: true, customerType: event.target.value });
+			this.setState({
+				custCheck: true,
+				customerType: event.target.value,
+				custTypeErrorCheck: false,
+				custTypeErrorLabel: '',
+			});
 		} else {
 			document.getElementById('billNo').readOnly = false;
 			document.getElementById('custName').readOnly = false;
-			this.setState({ custCheck: false, customerType: event.target.value });
+			this.setState({
+				custCheck: false,
+				customerType: event.target.value,
+				custTypeErrorCheck: false,
+				custTypeErrorLabel: '',
+			});
 		}
 	};
 
@@ -87,7 +113,6 @@ class SalesDetails extends React.Component {
 	};
 
 	onSubmit = () => {
-		const { insertSalesDetails } = this.props;
 		const {
 			salesId,
 			customerName,
@@ -98,35 +123,75 @@ class SalesDetails extends React.Component {
 			paymentMode,
 			transactionId,
 			customerType,
+			selectedTypeId,
 		} = this.state;
-		let dbFormat = moment(salesDateVal).format('YYYY-MM-DD');
-		insertSalesDetails(
-			salesId,
-			productVal,
-			quantityVal,
-			totalAmtVal,
-			customerName,
-			dbFormat,
-			customerType,
-			paymentMode,
-			transactionId,
-		);
-		this.setState({
-			salesId: '',
-			productVal: '',
-			quantityVal: '',
-			totalAmtVal: '',
-			customerName: '',
-			paymentMode: '',
-			transactionId: '',
-			salesDateVal: '',
-			selectedTypeId: '',
-			modalOpen: true,
-		});
-		document.getElementById('cash').checked = false;
-		document.getElementById('cashless').checked = false;
-		document.getElementById('registered').checked = false;
-		document.getElementById('unregistered').checked = false;
+		if (
+			customerType.length > 0 &&
+			selectedTypeId.length > 0 &&
+			productVal.length > 0 &&
+			salesDateVal.length > 0 &&
+			quantityVal.length > 0 &&
+			paymentMode.length > 0
+		) {
+			console.log('In If');
+			const { insertSalesDetails } = this.props;
+			let dbFormat = moment(salesDateVal).format('YYYY-MM-DD');
+			insertSalesDetails(
+				salesId,
+				productVal,
+				quantityVal,
+				totalAmtVal,
+				customerName,
+				dbFormat,
+				customerType,
+				paymentMode,
+				transactionId,
+			);
+			this.setState({
+				salesId: '',
+				productVal: '',
+				quantityVal: '',
+				totalAmtVal: '',
+				customerName: '',
+				paymentMode: '',
+				transactionId: '',
+				salesDateVal: '',
+				selectedTypeId: '',
+				modalOpen: true,
+				custTypeErrorLabel: '',
+				custTypeErrorCheck: false,
+				pTypeErrorLabel: '',
+				pTypeErrorCheck: false,
+				pNameErrorLabel: '',
+				pNameErrorCheck: false,
+				sDateErrorLabel: '',
+				sDateErrorCheck: false,
+				pQuantityErrorLabel: '',
+				pQuantityErrorCheck: false,
+				paymentErrorLabel: '',
+				paymentErrorCheck: false,
+			});
+			document.getElementById('cash').checked = false;
+			document.getElementById('cashless').checked = false;
+			document.getElementById('registered').checked = false;
+			document.getElementById('unregistered').checked = false;
+		} else {
+			console.log('In out');
+			this.setState({
+				custTypeErrorLabel: 'Please select any option',
+				custTypeErrorCheck: true,
+				pTypeErrorLabel: 'Product Type is Mandatory',
+				pTypeErrorCheck: true,
+				pNameErrorLabel: 'Product Name is Mandatory',
+				pNameErrorCheck: true,
+				sDateErrorLabel: 'Please select any date',
+				sDateErrorCheck: true,
+				pQuantityErrorLabel: 'Product Quantity is Mandatory',
+				pQuantityErrorCheck: true,
+				paymentErrorLabel: 'Please select any option',
+				paymentErrorCheck: true,
+			});
+		}
 	};
 
 	onCancel = () => {
@@ -140,6 +205,18 @@ class SalesDetails extends React.Component {
 			transactionId: '',
 			salesDateVal: '',
 			selectedTypeId: '',
+			custTypeErrorLabel: '',
+			custTypeErrorCheck: false,
+			pTypeErrorLabel: '',
+			pTypeErrorCheck: false,
+			pNameErrorLabel: '',
+			pNameErrorCheck: false,
+			sDateErrorLabel: '',
+			sDateErrorCheck: false,
+			pQuantityErrorLabel: '',
+			pQuantityErrorCheck: false,
+			paymentErrorLabel: '',
+			paymentErrorCheck: false,
 		});
 		document.getElementById('cash').checked = false;
 		document.getElementById('cashless').checked = false;
@@ -160,6 +237,18 @@ class SalesDetails extends React.Component {
 			transactionId,
 			custCheck,
 			modalOpen,
+			custTypeErrorLabel,
+			custTypeErrorCheck,
+			pTypeErrorLabel,
+			pTypeErrorCheck,
+			pNameErrorLabel,
+			pNameErrorCheck,
+			sDateErrorLabel,
+			sDateErrorCheck,
+			pQuantityErrorLabel,
+			pQuantityErrorCheck,
+			paymentErrorLabel,
+			paymentErrorCheck,
 		} = this.state;
 		const transformProductTypeDetails = transform.transformProductType(productTypeDetails && productTypeDetails);
 		let productFilter = productDetails && productDetails.filter(item => item.productTypeId === selectedTypeId);
@@ -171,168 +260,161 @@ class SalesDetails extends React.Component {
 		return (
 			<Fragment>
 				<div className="sales-details">
-					<form method="post" action="/">
-						<div className="sales-details-form">
-							<div className="sd-part1">
-								<div className="sales-labels-part1">
-									<p className="slabel">Customer Type</p>
-									<p className="slabel">Bill No</p>
-									<p className="slabel">Customer Name</p>
-									<p className="slabel">Product Type</p>
-									<p className="slabel">Product Name</p>
-									<p className="slabel">Sales Date</p>
+					<div className="sales-details-form">
+						<div className="sd-part1">
+							<div className="sales-labels-part1">
+								<p className="slabel">Customer Type</p>
+								<p className="slabel">Bill No</p>
+								<p className="slabel">Customer Name</p>
+								<p className="slabel">Product Type</p>
+								<p className="slabel">Product Name</p>
+								<p className="slabel">Sales Date</p>
+							</div>
+							<div className="sales-text-part1">
+								<div className="customer-type">
+									<input
+										type="radio"
+										id="registered"
+										name="customerType"
+										value="1"
+										className="registered-sradio"
+										onClick={this.onCustomerTypeCheck}
+									/>
+									<label for="registered" className="registered-text">
+										Registered
+									</label>
+									<input
+										type="radio"
+										id="unregistered"
+										name="customerType"
+										value="2"
+										className="unregistered-sradio"
+										onClick={this.onCustomerTypeCheck}
+									/>
+									<label for="unregistered" className="unregistered-text">
+										Unregistered
+									</label>
+									<span className="custErrorLabel">{custTypeErrorLabel}</span>
 								</div>
-								<div className="sales-text-part1">
-									<div className="customer-type">
-										<input
-											type="radio"
-											id="registered"
-											name="customerType"
-											value="1"
-											required
-											className="registered-sradio"
-											required
-											onClick={this.onCustomerTypeCheck}
-										/>
-										<label for="registered" className="registered-text">
-											Registered
-										</label>
-										<input
-											type="radio"
-											id="unregistered"
-											name="customerType"
-											value="2"
-											required
-											className="unregistered-sradio"
-											onClick={this.onCustomerTypeCheck}
-										/>
-										<label for="unregistered" className="unregistered-text">
-											Unregistered
-										</label>
-									</div>
 
-									<input
-										className={custCheck ? 'stextbox-billNo' : 'stextbox'}
-										required
-										type="text"
-										onChange={this.onBillNoChange}
-										value={salesId}
-										id="billNo"
-									/>
-									<br />
-									<input
-										className={custCheck ? 'stextbox-custName' : 'stextbox'}
-										required
-										type="text"
-										onChange={this.onCustomerNameChange}
-										value={customerName}
-										id="custName"
-									/>
-									<br />
-									<Dropdown
-										selection
-										options={transformProductTypeDetails}
-										placeholder="Product Category"
-										className="sdropdown"
-										onChange={this.onProductTypeChange}
-										value={selectedTypeId}
-									/>
-									<br />
-									<Dropdown
-										selection
-										options={transformFilterProduct}
-										placeholder="Product"
-										className="sdropdown"
-										onChange={this.onProductChange}
-										value={productVal}
-									/>
-									<br />
-									<DatePicker
-										placeholderText="Sale Date"
-										selected={salesDateVal}
-										onChange={this.onProductDateChange}
-										dateFormat="d-MMM-yyyy"
-									/>
-								</div>
-							</div>
-							<div className="sd-part2">
-								<div className="sales-labels-part2">
-									<p className="slabel">Product Quantity</p>
-									<p className="slabel">Product Price</p>
-									<p className="slabel">Total Amount to be paid</p>
-									<p className="slabel">Payment Option</p>
-									<p className="slabel">Transaction Id</p>
-								</div>
-								<div className="sales-text-part2">
-									<input
-										className="stextbox"
-										required="required"
-										type="text"
-										onChange={this.onQuantityChange}
-										title="Enter numbers only."
-										pattern="[\d]{0-9}{1,5}"
-										id="quantity"
-										value={quantityVal}
-									/>
-									<br />
-									<input
-										className="stextbox-price"
-										type="text"
-										value={productPrice ? productPrice.price : ''}
-										readOnly
-									/>
-									<br />
-									<input
-										className="stextbox-total"
-										type="text"
-										readOnly
-										value={totalAmtVal ? totalAmtVal : ''}
-									/>
-									<div className="payment-mode">
-										<input
-											type="radio"
-											id="cash"
-											name="payment"
-											value="1"
-											required
-											className="cash-sradio"
-											required
-											onClick={this.onPaymentModeChange}
-										/>
-										<label for="cash" className="cash-text">
-											Cash/Cheque
-										</label>
-										<input
-											type="radio"
-											id="cashless"
-											name="payment"
-											value="2"
-											required
-											className="cashless-sradio"
-											onClick={this.onPaymentModeChange}
-										/>
-										<label for="cashless" className="cashless-text">
-											Cashless
-										</label>
-									</div>
-									<input
-										className="stextbox"
-										type="text"
-										onChange={this.onTransactionChange}
-										value={transactionId}
-									/>
-								</div>
+								<input
+									className={custCheck ? 'stextbox-billNo' : 'stextbox'}
+									type="text"
+									onChange={this.onBillNoChange}
+									value={salesId}
+									id="billNo"
+								/>
+								<br />
+								<input
+									className={custCheck ? 'stextbox-custName' : 'stextbox'}
+									type="text"
+									onChange={this.onCustomerNameChange}
+									value={customerName}
+									id="custName"
+								/>
+								<br />
+								<Dropdown
+									selection
+									options={transformProductTypeDetails}
+									placeholder={pTypeErrorCheck ? pTypeErrorLabel : 'Product Category'}
+									className={pTypeErrorCheck ? 'sdropdown-error' : 'sdropdown'}
+									onChange={this.onProductTypeChange}
+									value={selectedTypeId}
+								/>
+								<br />
+								<Dropdown
+									selection
+									options={transformFilterProduct}
+									placeholder={pNameErrorCheck ? pNameErrorLabel : 'Product'}
+									className={pNameErrorCheck ? 'sdropdown-error' : 'sdropdown'}
+									onChange={this.onProductChange}
+									value={productVal}
+								/>
+								<br />
+								<DatePicker
+									placeholderText={sDateErrorCheck ? sDateErrorLabel : 'Sale Date'}
+									selected={salesDateVal}
+									onChange={this.onProductDateChange}
+									dateFormat="d-MMM-yyyy"
+									className={sDateErrorCheck && 'sDate-error'}
+								/>
 							</div>
 						</div>
-						<div className="sales-btn">
-							<button className="btn-submit" type="submit" onClick={this.onSubmit}>
-								Submit
-							</button>
-							<button className="btn-cancel" type="button" onClick={this.onCancel}>
-								Cancel
-							</button>
+						<div className="sd-part2">
+							<div className="sales-labels-part2">
+								<p className="slabel">Product Quantity</p>
+								<p className="slabel">Product Price</p>
+								<p className="slabel">Total Amount to be paid</p>
+								<p className="slabel">Payment Option</p>
+								<p className="slabel">Transaction Id</p>
+							</div>
+							<div className="sales-text-part2">
+								<input
+									className={pQuantityErrorCheck ? 'stext-error' : 'stextbox'}
+									type="text"
+									onChange={this.onQuantityChange}
+									title="Enter numbers only."
+									pattern="[\d]{0-9}{1,5}"
+									id="quantity"
+									value={quantityVal}
+									placeholder={pQuantityErrorCheck && pQuantityErrorLabel}
+								/>
+								<br />
+								<input
+									className="stextbox-price"
+									type="text"
+									value={productPrice ? productPrice.price : ''}
+									readOnly
+								/>
+								<br />
+								<input
+									className="stextbox-total"
+									type="text"
+									readOnly
+									value={totalAmtVal ? totalAmtVal : ''}
+								/>
+								<div className="payment-mode">
+									<input
+										type="radio"
+										id="cash"
+										name="payment"
+										value="1"
+										className="cash-sradio"
+										onClick={this.onPaymentModeChange}
+									/>
+									<label for="cash" className="cash-text">
+										Cash/Cheque
+									</label>
+									<input
+										type="radio"
+										id="cashless"
+										name="payment"
+										value="2"
+										className="cashless-sradio"
+										onClick={this.onPaymentModeChange}
+									/>
+									<label for="cashless" className="cashless-text">
+										Cashless
+									</label>
+									<span className="paymentErrorLabel">{paymentErrorLabel}</span>
+								</div>
+								<input
+									className="stextbox"
+									type="text"
+									onChange={this.onTransactionChange}
+									value={transactionId}
+								/>
+							</div>
 						</div>
-					</form>
+					</div>
+					<div className="sales-btn">
+						<button className="btn-submit" type="submit" onClick={this.onSubmit}>
+							Submit
+						</button>
+						<button className="btn-cancel" type="button" onClick={this.onCancel}>
+							Cancel
+						</button>
+					</div>
 				</div>
 				<DataTable
 					columnHeader={columnConstant.salesDetailsColumnHeader}

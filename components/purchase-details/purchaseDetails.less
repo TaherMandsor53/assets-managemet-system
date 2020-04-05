@@ -1,5 +1,5 @@
 .purchase-details {
-	display: flex;
+	display: inline-block;
 	margin-top: 40px;
 	.purchase-details-form {
 		display: flex;
@@ -23,7 +23,22 @@
 					width: 250px;
 					border: 1px solid #bebebe;
 					padding-left: 10px;
+					color: red;
 				}
+				.ptext-error {
+					.ptextbox();
+					border: 1px solid red;
+				}
+				.pDate-error::placeholder {
+					color: red;
+				}
+				.pDate-error {
+					border: 1px solid red !important;
+				}
+				.ptext-error::placeholder {
+					color: red;
+				}
+
 				.ptextbox-price {
 					.ptextbox();
 					background-color: rgb(235, 235, 228);
@@ -35,6 +50,13 @@
 
 				.ui.selection.dropdown.pdropdown {
 					margin-bottom: 20px;
+				}
+				.ui.selection.dropdown.pdropdown-error {
+					.default.text {
+						color: red !important;
+					}
+					margin-bottom: 20px;
+					border: 1px solid red !important;
 				}
 			}
 		}
@@ -71,6 +93,9 @@
 					border: 1px solid #bebebe;
 					padding: 8px;
 					margin-bottom: 20px;
+					.pradio-errorLabel {
+						color: red;
+					}
 				}
 			}
 		}

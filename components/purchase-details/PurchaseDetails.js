@@ -21,6 +21,21 @@ class PurchaseDetails extends React.Component {
 			paymentMode: '',
 			transactionId: '',
 			modalOpen: false,
+			//Error Labels
+			pIdErrorLabel: '',
+			pIdErrorCheck: false,
+			vNameErrorLabel: '',
+			vNameErrorCheck: false,
+			pTypeErrorLabel: '',
+			pTypeErrorCheck: false,
+			pNameErrorLabel: '',
+			pNameErrorCheck: false,
+			pDateErrorLabel: '',
+			pDateErrorCheck: false,
+			pQuantityErrorLabel: '',
+			pQuantityErrorCheck: false,
+			paymentErrorLabel: '',
+			paymentErrorCheck: false,
 		};
 	}
 
@@ -61,6 +76,9 @@ class PurchaseDetails extends React.Component {
 
 	onPaymentModeChange = event => {
 		this.setState({ paymentMode: event.target.value });
+		if (event.target.value) {
+			this.setState({ paymentErrorCheck: false, paymentErrorLabel: '' });
+		}
 	};
 
 	onTransactionChange = event => {
@@ -73,8 +91,6 @@ class PurchaseDetails extends React.Component {
 	};
 
 	onSubmit = () => {
-		// document.getElementById('cash').removeAttribute('required');
-		// document.getElementById('cashless').removeAttribute('required');
 		const {
 			purchaseId,
 			vendorName,
@@ -84,33 +100,75 @@ class PurchaseDetails extends React.Component {
 			totalAmtVal,
 			paymentMode,
 			transactionId,
+			selectedTypeId,
 		} = this.state;
-		let dbFormatDate = moment(purchaseDateVal).format('YYYY-MM-DD');
-		this.props.insertPurchaseDetails(
-			purchaseId,
-			productVal,
-			quantityVal,
-			totalAmtVal,
-			vendorName,
-			paymentMode,
-			transactionId,
-			dbFormatDate,
-		);
-		this.setState({
-			purchaseId: '',
-			productVal: '',
-			quantityVal: '',
-			totalAmtVal: '',
-			vendorName: '',
-			paymentMode: '',
-			transactionId: '',
-			purchaseDateVal: '',
-			selectedTypeId: '',
-			modalOpen: true,
-		});
+		if (
+			purchaseId.length > 0 &&
+			vendorName.length > 0 &&
+			selectedTypeId.length > 0 &&
+			productVal.length > 0 &&
+			purchaseDateVal.length > 0 &&
+			quantityVal.length > 0 &&
+			paymentMode.length > 0
+		) {
+			this.setState({
+				pIdErrorLabel: '',
+				pIdErrorCheck: false,
+				vNameErrorLabel: '',
+				vNameErrorCheck: false,
+				pTypeErrorLabel: '',
+				pTypeErrorCheck: false,
+				pNameErrorLabel: '',
+				pNameErrorCheck: false,
+				pDateErrorLabel: '',
+				pDateErrorCheck: false,
+				pQuantityErrorLabel: '',
+				pQuantityErrorCheck: false,
+				paymentErrorLabel: '',
+				paymentErrorCheck: false,
+				purchaseId: '',
+				productVal: '',
+				quantityVal: '',
+				totalAmtVal: '',
+				vendorName: '',
+				paymentMode: '',
+				transactionId: '',
+				purchaseDateVal: '',
+				selectedTypeId: '',
+				modalOpen: true,
+			});
 
-		document.getElementById('cash').checked = false;
-		document.getElementById('cashless').checked = false;
+			let dbFormatDate = moment(purchaseDateVal).format('YYYY-MM-DD');
+			this.props.insertPurchaseDetails(
+				purchaseId,
+				productVal,
+				quantityVal,
+				totalAmtVal,
+				vendorName,
+				paymentMode,
+				transactionId,
+				dbFormatDate,
+			);
+			document.getElementById('cash').checked = false;
+			document.getElementById('cashless').checked = false;
+		} else {
+			this.setState({
+				pIdErrorLabel: 'Product Id is Mandatory',
+				pIdErrorCheck: true,
+				vNameErrorLabel: 'Vendor name is Mandatory',
+				vNameErrorCheck: true,
+				pTypeErrorLabel: 'Product type is Mandatory',
+				pTypeErrorCheck: true,
+				pNameErrorLabel: 'Product name is Mandatory',
+				pNameErrorCheck: true,
+				pDateErrorLabel: 'Please select any date',
+				pDateErrorCheck: true,
+				pQuantityErrorLabel: 'Product quantity is Mandatory',
+				pQuantityErrorCheck: true,
+				paymentErrorLabel: 'Please select any option',
+				paymentErrorCheck: true,
+			});
+		}
 	};
 
 	onCancel = () => {
@@ -124,6 +182,20 @@ class PurchaseDetails extends React.Component {
 			transactionId: '',
 			purchaseDateVal: '',
 			selectedTypeId: '',
+			pIdErrorLabel: '',
+			pIdErrorCheck: false,
+			vNameErrorLabel: '',
+			vNameErrorCheck: false,
+			pTypeErrorLabel: '',
+			pTypeErrorCheck: false,
+			pNameErrorLabel: '',
+			pNameErrorCheck: false,
+			pDateErrorLabel: '',
+			pDateErrorCheck: false,
+			pQuantityErrorLabel: '',
+			pQuantityErrorCheck: false,
+			paymentErrorLabel: '',
+			paymentErrorCheck: false,
 		});
 		document.getElementById('cash').checked = false;
 		document.getElementById('cashless').checked = false;
@@ -141,6 +213,20 @@ class PurchaseDetails extends React.Component {
 			purchaseId,
 			transactionId,
 			modalOpen,
+			pIdErrorLabel,
+			pIdErrorCheck,
+			vNameErrorLabel,
+			vNameErrorCheck,
+			pTypeErrorLabel,
+			pTypeErrorCheck,
+			pNameErrorLabel,
+			pNameErrorCheck,
+			pDateErrorLabel,
+			pDateErrorCheck,
+			pQuantityErrorLabel,
+			pQuantityErrorCheck,
+			paymentErrorLabel,
+			paymentErrorCheck,
 		} = this.state;
 		const transformProductTypeDetails = transform.transformProductType(productTypeDetails && productTypeDetails);
 		let productFilter = productDetails && productDetails.filter(item => item.productTypeId === selectedTypeId);
@@ -151,139 +237,137 @@ class PurchaseDetails extends React.Component {
 		return (
 			<Fragment>
 				<div className="purchase-details">
-					<form method="post" action="/">
-						<div className="purchase-details-form">
-							<div className="pd-part1">
-								<div className="purchase-labels-part1">
-									<p className="plabel">Bill No</p>
-									<p className="plabel">Vendor Name</p>
-									<p className="plabel">Product Type</p>
-									<p className="plabel">Product Name</p>
-									<p className="plabel">Purchase Date</p>
-								</div>
-								<div className="purchase-text-part1">
-									<input
-										className="ptextbox"
-										required
-										type="text"
-										onChange={this.onBillNoChange}
-										value={purchaseId}
-										id="pid"
-									/>
-									<br />
-									<input
-										className="ptextbox"
-										required
-										type="text"
-										onChange={this.onVendorNameChange}
-										value={vendorName}
-										id="vName"
-									/>
-									<br />
-									<Dropdown
-										selection
-										options={transformProductTypeDetails}
-										placeholder="Product Category"
-										className="pdropdown"
-										onChange={this.onProductTypeChange}
-										value={selectedTypeId}
-									/>
-									<br />
-									<Dropdown
-										selection
-										options={transformFilterProduct}
-										placeholder="Product"
-										className="pdropdown"
-										onChange={this.onProductChange}
-										value={productVal}
-									/>
-									<br />
-									<DatePicker
-										placeholderText="Purchase Date"
-										selected={purchaseDateVal}
-										onChange={this.onProductDateChange}
-										dateFormat="d-MMM-yyyy"
-									/>
-								</div>
+					<div className="purchase-details-form">
+						<div className="pd-part1">
+							<div className="purchase-labels-part1">
+								<p className="plabel">Bill No</p>
+								<p className="plabel">Vendor Name</p>
+								<p className="plabel">Product Type</p>
+								<p className="plabel">Product Name</p>
+								<p className="plabel">Purchase Date</p>
 							</div>
-							<div className="pd-part2">
-								<div className="purchase-labels-part2">
-									<p className="plabel">Product Quantity</p>
-									<p className="plabel">Product Price</p>
-									<p className="plabel">Total Amount to be paid</p>
-									<p className="plabel">Payment Option</p>
-									<p className="plabel">Transaction Id</p>
-								</div>
-								<div className="purchase-text-part2">
-									<input
-										className="ptextbox"
-										required="required"
-										type="text"
-										onChange={this.onQuantityChange}
-										title="Enter numbers only."
-										pattern="[\d]{0-9}{1,5}"
-										id="quantity"
-										value={quantityVal}
-									/>
-									<br />
-									<input
-										className="ptextbox-price"
-										type="text"
-										value={productPrice ? productPrice.price : ''}
-										readOnly
-									/>
-									<br />
-									<input
-										className="ptextbox-total"
-										type="text"
-										readOnly
-										value={totalAmtVal ? totalAmtVal : ''}
-									/>
-									<div className="payment-mode">
-										<input
-											type="radio"
-											id="cash"
-											name="payment"
-											value="1"
-											required
-											className="cash-pradio"
-											required
-											onClick={this.onPaymentModeChange}
-										/>
-										<label for="cash" className="cash-text">
-											Cash/Cheque
-										</label>
-										<input
-											type="radio"
-											id="cashless"
-											name="payment"
-											value="2"
-											required
-											className="cashless-pradio"
-											onClick={this.onPaymentModeChange}
-										/>
-										<label for="cashless" className="cashless-text">
-											Cashless
-										</label>
-									</div>
-									<input
-										className="ptextbox"
-										type="text"
-										onChange={this.onTransactionChange}
-										value={transactionId}
-									/>
-								</div>
+							<div className="purchase-text-part1">
+								<input
+									className={pIdErrorCheck ? 'ptext-error' : 'ptextbox'}
+									type="text"
+									onChange={this.onBillNoChange}
+									value={purchaseId}
+									id="pid"
+									placeholder={pIdErrorLabel}
+								/>
+								<br />
+								<input
+									className={vNameErrorCheck ? 'ptext-error' : 'ptextbox'}
+									type="text"
+									onChange={this.onVendorNameChange}
+									value={vendorName}
+									id="vName"
+									placeholder={vNameErrorLabel}
+								/>
+								<br />
+								<Dropdown
+									selection
+									options={transformProductTypeDetails}
+									placeholder={pTypeErrorCheck ? pTypeErrorLabel : 'Product Category'}
+									className={pTypeErrorCheck ? 'pdropdown-error' : 'pdropdown'}
+									onChange={this.onProductTypeChange}
+									value={selectedTypeId}
+								/>
+								<br />
+								<Dropdown
+									selection
+									options={transformFilterProduct}
+									placeholder={pNameErrorCheck ? pNameErrorLabel : 'Product'}
+									className={pNameErrorCheck ? 'pdropdown-error' : 'pdropdown'}
+									onChange={this.onProductChange}
+									value={productVal}
+								/>
+								<br />
+								<DatePicker
+									placeholderText={pDateErrorCheck ? pDateErrorLabel : 'Purchase Date'}
+									selected={purchaseDateVal}
+									onChange={this.onProductDateChange}
+									dateFormat="d-MMM-yyyy"
+									className={pDateErrorCheck && 'pDate-error'}
+								/>
 							</div>
 						</div>
-						<div className="purchase-btn">
-							<button className="btn-submit" type="submit" onClick={this.onSubmit}>
-								Submit
-							</button>
-							<button className="btn-cancel" type="button" onClick={this.onCancel}>
-								Cancel
-							</button>
+						<div className="pd-part2">
+							<div className="purchase-labels-part2">
+								<p className="plabel">Product Quantity</p>
+								<p className="plabel">Product Price</p>
+								<p className="plabel">Total Amount to be paid</p>
+								<p className="plabel">Payment Option</p>
+								<p className="plabel">Transaction Id</p>
+							</div>
+							<div className="purchase-text-part2">
+								<input
+									className={pQuantityErrorCheck ? 'ptext-error' : 'ptextbox'}
+									type="text"
+									onChange={this.onQuantityChange}
+									title="Enter numbers only."
+									pattern="[\d]{0-9}{1,5}"
+									id="quantity"
+									value={quantityVal}
+									placeholder={pQuantityErrorLabel}
+								/>
+								<br />
+								<input
+									className="ptextbox-price"
+									type="text"
+									value={productPrice ? productPrice.price : ''}
+									readOnly
+								/>
+								<br />
+								<input
+									className="ptextbox-total"
+									type="text"
+									readOnly
+									value={totalAmtVal ? totalAmtVal : ''}
+								/>
+								<div className="payment-mode">
+									<input
+										type="radio"
+										id="cash"
+										name="payment"
+										value="1"
+										className="cash-pradio"
+										onClick={this.onPaymentModeChange}
+									/>
+									<label for="cash" className="cash-text">
+										Cash/Cheque
+									</label>
+									<input
+										type="radio"
+										id="cashless"
+										name="payment"
+										value="2"
+										className="cashless-pradio"
+										onClick={this.onPaymentModeChange}
+									/>
+									<label for="cashless" className="cashless-text">
+										Cashless
+									</label>
+									<span className="pradio-errorLabel">{paymentErrorLabel}</span>
+								</div>
+
+								<input
+									className="ptextbox"
+									type="text"
+									onChange={this.onTransactionChange}
+									value={transactionId}
+								/>
+							</div>
 						</div>
-					</form>
+					</div>
+					<div className="purchase-btn">
+						<button className="btn-submit" type="submit" onClick={this.onSubmit}>
+							Submit
+						</button>
+						<button className="btn-cancel" type="button" onClick={this.onCancel}>
+							Cancel
+						</button>
+					</div>
 				</div>
 				<DataTable
 					columnHeader={columnConstant.purchaseDetailsColumnHeader}

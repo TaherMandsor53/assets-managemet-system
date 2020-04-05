@@ -4,6 +4,7 @@ import CardComponent from './common-components/CardComponent';
 import ProductDetails from './product-details/ProductDetails';
 import PurchaseDetails from './purchase-details/PurchaseDetails';
 import SalesDetails from './sales-details/SalesDetails';
+import StaffDetails from './staff-details/StaffDetails';
 
 class Home extends React.Component {
 	constructor(props) {
@@ -35,7 +36,7 @@ class Home extends React.Component {
 			},
 			{
 				menuItem: 'Staff Details',
-				render: () => <Tab.Pane attached={false}>Staff Details Content</Tab.Pane>,
+				render: () => <StaffDetails {...this.props} />,
 			},
 		];
 

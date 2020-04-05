@@ -1,5 +1,5 @@
 .sales-details {
-	display: flex;
+	display: inline-block;
 	margin-top: 40px;
 	.sales-details-form {
 		display: flex;
@@ -24,6 +24,13 @@
 					border: 1px solid #bebebe;
 					padding-left: 10px;
 				}
+				.stext-error {
+					.stextbox();
+					border: 1px solid red;
+				}
+				.stext-error::placeholder {
+					color: red;
+				}
 				.stextbox-price {
 					.stextbox();
 					background-color: rgb(235, 235, 228);
@@ -40,6 +47,19 @@
 
 				.ui.selection.dropdown.sdropdown {
 					margin-bottom: 20px;
+				}
+				.ui.selection.dropdown.sdropdown-error {
+					.default.text {
+						color: red !important;
+					}
+					margin-bottom: 20px;
+					border: 1px solid red !important;
+				}
+				.sDate-error {
+					border: 1px solid red !important;
+				}
+				.sDate-error::placeholder {
+					color: red;
 				}
 			}
 		}
@@ -64,12 +84,14 @@
 					color: #755139ff;
 					vertical-align: text-bottom;
 				}
-
 				.customer-type {
 					height: 38px;
 					border: 1px solid #bebebe;
 					padding: 8px;
 					margin-bottom: 20px;
+					.custErrorLabel {
+						color: red;
+					}
 				}
 			}
 		}
@@ -99,6 +121,9 @@
 					border: 1px solid #bebebe;
 					padding: 8px;
 					margin-bottom: 20px;
+					.paymentErrorLabel {
+						color: red;
+					}
 				}
 			}
 		}
