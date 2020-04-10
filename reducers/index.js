@@ -9,6 +9,8 @@ import insertPurchaseDetails from './InsertPurchaseDetailsReducer';
 import purchaseDetails from './PurchaseDetailsReducer';
 import insertSalesDetails from './InsertSalesDetailsReducer';
 import salesDetails from './SalesDetailsReducer';
+import insertEmployeeDetails from './InsertEmployeeDetailsReducer';
+import employeeDetails from './EmployeeDetailsReducer';
 
 export default combineReducers({
 	userDetails,
@@ -20,4 +22,6 @@ export default combineReducers({
 	purchaseDetails,
 	insertSalesDetails,
 	salesDetails,
+	insertEmployeeDetails,
+	employeeDetails,
 });

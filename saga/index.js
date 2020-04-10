@@ -8,6 +8,8 @@ import purchaseDetailsSaga from './PurchaseDetailsSaga';
 import insertPurchaseDetailsSaga from './InsertPurchaseDetailsSaga';
 import insertSalesDetailsSaga from './InsertSalesDetailsSaga';
 import salesDetailsSaga from './SalesDetailsSaga';
+import insertEmployeeDetailsSaga from './InsertEmployeeDetailsSaga';
+import employeeDetailsSaga from './EmployeeDetailsSaga';
 
 function* sagas() {
 	yield fork(userDetailsSaga);
@@ -19,6 +21,8 @@ function* sagas() {
 	yield fork(insertPurchaseDetailsSaga);
 	yield fork(insertSalesDetailsSaga);
 	yield fork(salesDetailsSaga);
+	yield fork(insertEmployeeDetailsSaga);
+	yield fork(employeeDetailsSaga);
 }
 
 export default sagas;

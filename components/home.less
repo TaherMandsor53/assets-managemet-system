@@ -99,12 +99,20 @@
 		width: 248px;
 	}
 
+	.rcal-picker-body .rcal-footer .rcal-done-button {
+		background-color: #755139ff;
+		color: #f2edd7ff;
+	}
+	.rcal-picker-body .rcal-footer .rcal-done-button:hover {
+		background-color: #755139ff;
+	}
 	.rcal-picker-header {
 		border: 1px solid #bebebe;
 		height: 38px;
 		padding: 7px;
 		.rcal-header-content .rcal-date-value {
 			padding-left: 10px;
+			color: #755139ff;
 		}
 	}
 
@@ -122,6 +130,57 @@
 		.rcal-week-header
 		.rcal-week-item {
 		width: 100%;
+	}
+
+	.rcal-picker-body
+		.rcal-calendar-without-sidebar
+		.rcal-calendar
+		.rcal-calendar-days
+		.rcal-calendar-days-row
+		.rcal-date-selected,
+	.rcal-date-item:hover,
+	.rcal-picker-body
+		.rcal-calendar-without-sidebar
+		.rcal-calendar
+		.rcal-calendar-days
+		.rcal-week-header
+		.rcal-date-selected,
+	.rcal-date-item:hover {
+		background-color: #755139ff !important;
+		color: #f2edd7ff;
+	}
+
+	.rcal-picker-body
+		.rcal-calendar-without-sidebar
+		.rcal-calendar
+		.rcal-calendar-days
+		.rcal-calendar-days-row
+		.rcal-date-today,
+	.rcal-picker-body
+		.rcal-calendar-without-sidebar
+		.rcal-calendar
+		.rcal-calendar-days
+		.rcal-week-header
+		.rcal-date-today {
+		border-color: #755139ff;
+		background-color: #f2edd7ff;
+		color: #755139ff;
+	}
+
+	.rcal-picker-body
+		.rcal-calendar-without-sidebar
+		.rcal-calendar
+		.rcal-calendar-days
+		.rcal-calendar-days-row
+		.rcal-date-today:hover,
+	.rcal-picker-body
+		.rcal-calendar-without-sidebar
+		.rcal-calendar
+		.rcal-calendar-days
+		.rcal-week-header
+		.rcal-date-today:hover {
+		color: #f2edd7ff;
+		background-color: #f2edd7ff;
 	}
 }
 
@@ -176,5 +235,5 @@ input[type='text'] {
 	width: 250px;
 }
 .react-datepicker {
-	border-radius: 0px;
+	border-radius: 0px !important;
 }

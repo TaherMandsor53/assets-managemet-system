@@ -5,6 +5,7 @@ import ProductDetails from './product-details/ProductDetails';
 import PurchaseDetails from './purchase-details/PurchaseDetails';
 import SalesDetails from './sales-details/SalesDetails';
 import StaffDetails from './staff-details/StaffDetails';
+import StaffAttendanceDetails from './staff-attendance-details/StaffAttendanceDetails';
 
 class Home extends React.Component {
 	constructor(props) {
@@ -37,6 +38,10 @@ class Home extends React.Component {
 			{
 				menuItem: 'Staff Details',
 				render: () => <StaffDetails {...this.props} />,
+			},
+			{
+				menuItem: 'Staff Attendance Details',
+				render: () => <StaffAttendanceDetails {...this.props} />,
 			},
 		];
 

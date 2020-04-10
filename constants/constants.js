@@ -58,7 +58,7 @@ const salesDetailsColumnHeader = [
 		value: 'Customer Type',
 	},
 	{
-		id: 'salesId',
+		id: 'billNo',
 		value: 'Bill No',
 	},
 	{
@@ -87,8 +87,56 @@ const salesDetailsColumnHeader = [
 	},
 ];
 
+const employeeDesignation = [
+	{
+		text: 'Cashier',
+		value: '1',
+	},
+	{
+		text: 'Retail Buyer',
+		value: '2',
+	},
+	{
+		text: 'Store Manager',
+		value: '3',
+	},
+	{
+		text: 'Customer Service Assistant',
+		value: '4',
+	},
+];
+
+const employeeDetailsColumnHeader = [
+	{
+		id: 'name',
+		value: 'Staff Name',
+	},
+	{
+		id: 'designation',
+		value: 'Staff Designation',
+	},
+	{
+		id: 'dob',
+		value: 'Date Of Birth',
+	},
+	{
+		id: 'salary',
+		value: 'Staff Salary',
+	},
+	{
+		id: 'identityNo',
+		value: 'Identification No',
+	},
+	{
+		id: 'doj',
+		value: 'Date Of Joining',
+	},
+];
+
 export default {
 	productDetailsColumnHeader,
 	purchaseDetailsColumnHeader,
 	salesDetailsColumnHeader,
+	employeeDesignation,
+	employeeDetailsColumnHeader,
 };

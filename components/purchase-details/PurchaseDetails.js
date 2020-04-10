@@ -61,9 +61,10 @@ class PurchaseDetails extends React.Component {
 	};
 
 	onQuantityChange = event => {
+		let quantity = event.target.value.replace(/[^0-9]/g, '');
 		let price = document.getElementsByClassName('ptextbox-price')[0].value;
-		let totalAmount = price * event.target.value;
-		this.setState({ totalAmtVal: totalAmount, quantityVal: event.target.value });
+		let totalAmount = price * quantity;
+		this.setState({ totalAmtVal: totalAmount, quantityVal: quantity });
 	};
 
 	onBillNoChange = event => {
@@ -105,9 +106,9 @@ class PurchaseDetails extends React.Component {
 		if (
 			purchaseId.length > 0 &&
 			vendorName.length > 0 &&
-			selectedTypeId.length > 0 &&
+			selectedTypeId &&
 			productVal.length > 0 &&
-			purchaseDateVal.length > 0 &&
+			purchaseDateVal &&
 			quantityVal.length > 0 &&
 			paymentMode.length > 0
 		) {
@@ -303,10 +304,7 @@ class PurchaseDetails extends React.Component {
 							<div className="purchase-text-part2">
 								<input
 									className={pQuantityErrorCheck ? 'ptext-error' : 'ptextbox'}
-									type="text"
 									onChange={this.onQuantityChange}
-									title="Enter numbers only."
-									pattern="[\d]{0-9}{1,5}"
 									id="quantity"
 									value={quantityVal}
 									placeholder={pQuantityErrorLabel}

@@ -56,7 +56,7 @@ const fetchPurchaseDetails = () => {
 };
 
 const insertSalesDetails = (
-	salesId,
+	billNo,
 	productId,
 	quantity,
 	totalAmount,
@@ -68,7 +68,7 @@ const insertSalesDetails = (
 ) => {
 	const URL = `${baseURL}postSalesDetails`;
 	return axios.post(URL, {
-		salesId,
+		billNo,
 		productId,
 		quantity,
 		totalAmount,
@@ -85,6 +85,24 @@ const fetchSalesDetails = () => {
 	return axios.get(URL);
 };
 
+const insertEmployeeDetails = (designationId, staffName, address, dob, doj, identityVal, salaryVal) => {
+	const URL = `${baseURL}postEmployeeDetails`;
+	return axios.post(URL, {
+		designationId,
+		staffName,
+		address,
+		dob,
+		doj,
+		identityVal,
+		salaryVal,
+	});
+};
+
+const fetchEmployeeDetails = () => {
+	const URL = `${baseURL}getEmployeeDetails`;
+	return axios.get(URL);
+};
+
 export default {
 	fetchUserDetails,
 	updatePasswordDetails,
@@ -95,4 +113,6 @@ export default {
 	fetchPurchaseDetails,
 	insertSalesDetails,
 	fetchSalesDetails,
+	insertEmployeeDetails,
+	fetchEmployeeDetails,
 };

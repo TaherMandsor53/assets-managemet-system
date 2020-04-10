@@ -15,7 +15,7 @@ class SalesDetails extends React.Component {
 			salesDateVal: '',
 			productVal: '',
 			totalAmtVal: '',
-			salesId: '',
+			billNo: '',
 			customerName: '',
 			quantityVal: '',
 			paymentMode: '',
@@ -61,13 +61,14 @@ class SalesDetails extends React.Component {
 	};
 
 	onQuantityChange = event => {
+		let quantity = event.target.value.replace(/[^0-9]/g, '');
 		let price = document.getElementsByClassName('stextbox-price')[0].value;
-		let totalAmount = price * event.target.value;
-		this.setState({ totalAmtVal: totalAmount, quantityVal: event.target.value });
+		let totalAmount = price * quantity;
+		this.setState({ totalAmtVal: totalAmount, quantityVal: quantity });
 	};
 
 	onBillNoChange = event => {
-		this.setState({ salesId: event.target.value });
+		this.setState({ billNo: event.target.value });
 	};
 
 	onCustomerNameChange = event => {
@@ -114,7 +115,7 @@ class SalesDetails extends React.Component {
 
 	onSubmit = () => {
 		const {
-			salesId,
+			billNo,
 			customerName,
 			productVal,
 			salesDateVal,
@@ -125,19 +126,19 @@ class SalesDetails extends React.Component {
 			customerType,
 			selectedTypeId,
 		} = this.state;
+
 		if (
 			customerType.length > 0 &&
-			selectedTypeId.length > 0 &&
+			selectedTypeId &&
 			productVal.length > 0 &&
-			salesDateVal.length > 0 &&
+			salesDateVal &&
 			quantityVal.length > 0 &&
 			paymentMode.length > 0
 		) {
-			console.log('In If');
 			const { insertSalesDetails } = this.props;
 			let dbFormat = moment(salesDateVal).format('YYYY-MM-DD');
 			insertSalesDetails(
-				salesId,
+				billNo,
 				productVal,
 				quantityVal,
 				totalAmtVal,
@@ -148,7 +149,7 @@ class SalesDetails extends React.Component {
 				transactionId,
 			);
 			this.setState({
-				salesId: '',
+				billNo: '',
 				productVal: '',
 				quantityVal: '',
 				totalAmtVal: '',
@@ -170,13 +171,15 @@ class SalesDetails extends React.Component {
 				pQuantityErrorCheck: false,
 				paymentErrorLabel: '',
 				paymentErrorCheck: false,
+				custCheck: false,
 			});
 			document.getElementById('cash').checked = false;
 			document.getElementById('cashless').checked = false;
 			document.getElementById('registered').checked = false;
 			document.getElementById('unregistered').checked = false;
+			document.getElementById('billNo').readOnly = false;
+			document.getElementById('custName').readOnly = false;
 		} else {
-			console.log('In out');
 			this.setState({
 				custTypeErrorLabel: 'Please select any option',
 				custTypeErrorCheck: true,
@@ -196,7 +199,7 @@ class SalesDetails extends React.Component {
 
 	onCancel = () => {
 		this.setState({
-			salesId: '',
+			billNo: '',
 			productVal: '',
 			quantityVal: '',
 			totalAmtVal: '',
@@ -233,7 +236,7 @@ class SalesDetails extends React.Component {
 			totalAmtVal,
 			customerName,
 			quantityVal,
-			salesId,
+			billNo,
 			transactionId,
 			custCheck,
 			modalOpen,
@@ -301,7 +304,7 @@ class SalesDetails extends React.Component {
 									className={custCheck ? 'stextbox-billNo' : 'stextbox'}
 									type="text"
 									onChange={this.onBillNoChange}
-									value={salesId}
+									value={billNo}
 									id="billNo"
 								/>
 								<br />

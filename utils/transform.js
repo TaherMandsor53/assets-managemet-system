@@ -1,5 +1,4 @@
 import moment from 'moment';
-import PurchaseDetails from '../components/purchase-details/PurchaseDetails';
 
 const transformProductType = data => {
 	return (
@@ -63,7 +62,7 @@ const transformSalesDetails = (salesDetails, proDetails) => {
 		salesDetails.map(item => {
 			return {
 				custType: item.customerType === '1' ? 'Registered' : 'Unregistered',
-				salesId: item.salesId,
+				billNo: item.billNo,
 				custName: item.customerName,
 				pName: proDetails && proDetails.find(data => data.productId === item.productId).productName,
 				sDate: moment(item.salesDate).format('DD-MMM-YYYY'),
@@ -75,10 +74,29 @@ const transformSalesDetails = (salesDetails, proDetails) => {
 	);
 };
 
+const transformEmployeeDetails = (data, designation) => {
+	let currentDate = moment().format('YYYY-MM');
+	let noOfDaysInMonth = moment(currentDate).daysInMonth();
+	return (
+		data &&
+		data.map(item => {
+			return {
+				name: item.employeeName,
+				designation: designation && designation.find(data => data.value === item.designation).text,
+				dob: moment(item.dateOfBirth).format('DD-MMM-YYYY'),
+				salary: item.salary * noOfDaysInMonth,
+				identityNo: item.identityNo,
+				doj: moment(item.dateOfJoining).format('DD-MMM-YYYY'),
+			};
+		})
+	);
+};
+
 export default {
 	transformProductType,
 	transformProductDetails,
 	transformFilterProduct,
 	transformPurchaseDetails,
 	transformSalesDetails,
+	transformEmployeeDetails,
 };

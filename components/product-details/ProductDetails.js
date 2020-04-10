@@ -45,7 +45,8 @@ class ProductDetails extends React.Component {
 	};
 
 	onProductPriceChange = event => {
-		this.setState({ productPriceVal: event.target.value });
+		let price = event.target.value.replace(/[^0-9\.]/g, '');
+		this.setState({ productPriceVal: price });
 	};
 
 	onProductTypeChange = (event, data) => {

@@ -66,7 +66,7 @@ export function requestPurchaseDetails() {
 }
 
 export function insertSalesDetails(
-	salesId,
+	billNo,
 	productId,
 	quantity,
 	totalAmount,
@@ -78,7 +78,7 @@ export function insertSalesDetails(
 ) {
 	return {
 		type: types.INSERT_SALES_DETAILS_REQUEST,
-		salesId,
+		billNo,
 		productId,
 		quantity,
 		totalAmount,
@@ -93,5 +93,24 @@ export function insertSalesDetails(
 export function requestSalesDetails() {
 	return {
 		type: types.DISPLAY_SALES_DETAILS_REQUEST,
+	};
+}
+
+export function insertEmployeeDetails(designationId, staffName, address, dob, doj, identityVal, salaryVal) {
+	return {
+		type: types.INSERT_EMPLOYEE_DETAILS_REQUEST,
+		designationId,
+		staffName,
+		address,
+		dob,
+		doj,
+		identityVal,
+		salaryVal,
+	};
+}
+
+export function requestEmployeeDetails() {
+	return {
+		type: types.DISPLAY_EMPLOYEE_DETAILS_REQUEST,
 	};
 }

@@ -7,7 +7,7 @@ function* insertSalesDetails(action) {
 	try {
 		const insertSalesDetails = yield call(
 			api.insertSalesDetails,
-			action.salesId,
+			action.billNo,
 			action.productId,
 			action.quantity,
 			action.totalAmount,

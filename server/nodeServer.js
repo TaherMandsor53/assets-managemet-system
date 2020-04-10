@@ -134,7 +134,7 @@ app.get('/api/getPurchaseDetails', (req, res) => {
 
 //Insert Sales Details
 app.post('/api/postSalesDetails', (req, res) => {
-	let salesId = '"' + req.body.salesId + '"';
+	let billNo = '"' + req.body.billNo + '"';
 	let productId = '"' + req.body.productId + '"';
 	let quantity = '"' + req.body.quantity + '"';
 	let totalAmount = '"' + req.body.totalAmount + '"';
@@ -144,7 +144,7 @@ app.post('/api/postSalesDetails', (req, res) => {
 	let modeOfTransaction = '"' + req.body.modeOfTransaction + '"';
 	let transactionId = '"' + req.body.transactionId + '"';
 
-	const INSERT_SALES_DETAILS = `INSERT INTO SalesDetails(salesId,productId,quantity,totalAmount,customerName,salesDate,customerType,modeOfTransaction,transactionId)VALUES(${salesId},${productId},${quantity},${totalAmount},${customerName},${salesDate},${customerType},${modeOfTransaction},${transactionId})`;
+	const INSERT_SALES_DETAILS = `INSERT INTO SalesDetails(billNo,productId,quantity,totalAmount,customerName,salesDate,customerType,modeOfTransaction,transactionId)VALUES(${billNo},${productId},${quantity},${totalAmount},${customerName},${salesDate},${customerType},${modeOfTransaction},${transactionId})`;
 	connection.query(INSERT_SALES_DETAILS, (err, result) => {
 		if (err) {
 			res.send(err);
@@ -158,6 +158,38 @@ app.post('/api/postSalesDetails', (req, res) => {
 app.get('/api/getSalesDetails', (req, res) => {
 	const SELECT_SALES_DETAILS = `SELECT * FROM SalesDetails`;
 	connection.query(SELECT_SALES_DETAILS, (err, result) => {
+		if (err) {
+			res.send(err);
+		} else {
+			res.json({ data: result });
+		}
+	});
+});
+
+//Insert Employee Details
+app.post('/api/postEmployeeDetails', (req, res) => {
+	let designation = '"' + req.body.designationId + '"';
+	let employeeName = '"' + req.body.staffName + '"';
+	let address = '"' + req.body.address + '"';
+	let dateOfBirth = '"' + req.body.dob + '"';
+	let dateOfJoining = '"' + req.body.doj + '"';
+	let identityNo = '"' + req.body.identityVal + '"';
+	let salary = '"' + req.body.salaryVal + '"';
+
+	const INSERT_EMPLOYEE_DETAILS = `INSERT INTO EmployeeDetails(designation,employeeName,address,dateOfBirth,dateOfJoining,identityNo,salary)VALUES(${designation},${employeeName},${address},${dateOfBirth},${dateOfJoining},${identityNo},${salary})`;
+	connection.query(INSERT_EMPLOYEE_DETAILS, (err, result) => {
+		if (err) {
+			res.send(err);
+		} else {
+			res.send('employee details added successfully');
+		}
+	});
+});
+
+//Display all Employee details
+app.get('/api/getEmployeeDetails', (req, res) => {
+	const SELECT_EMPLOYEE_DETAILS = `SELECT * FROM EmployeeDetails`;
+	connection.query(SELECT_EMPLOYEE_DETAILS, (err, result) => {
 		if (err) {
 			res.send(err);
 		} else {

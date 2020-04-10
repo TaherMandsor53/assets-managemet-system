@@ -56,9 +56,9 @@ class DataTable extends React.Component {
 											sorted={
 												column === item.id
 													? direction
-													: item.id === showIcon
-													? 'ascending'
-													: null
+													: // : item.id === showIcon
+													  // ? 'ascending'
+													  null
 											}
 											onClick={this.handleSort(item.id)}
 										>
