@@ -302,8 +302,8 @@ class StaffDetails extends React.Component {
 
 				<MessageComponent
 					modalOpen={modalOpen}
-					modalHeader="Employee Details"
-					modalContent="Employee details added successfully"
+					modalHeader="Staff Details"
+					modalContent="Staff details added successfully"
 					onClose={this.onModalClose}
 				/>
 			</Fragment>

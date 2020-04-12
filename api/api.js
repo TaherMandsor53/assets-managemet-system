@@ -103,6 +103,11 @@ const fetchEmployeeDetails = () => {
 	return axios.get(URL);
 };
 
+const updateEmployeeLeaveDetails = (employeeId, leaveCount, leaveDates) => {
+	const URL = `${baseURL}updateEmployeeLeaveDetails`;
+	return axios.post(URL, { employeeId, leaveCount, leaveDates });
+};
+
 export default {
 	fetchUserDetails,
 	updatePasswordDetails,
@@ -115,4 +120,5 @@ export default {
 	fetchSalesDetails,
 	insertEmployeeDetails,
 	fetchEmployeeDetails,
+	updateEmployeeLeaveDetails,
 };

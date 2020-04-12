@@ -1,0 +1,60 @@
+.employee-details {
+	display: inline-block;
+	margin-top: 26px;
+	.employee-details-form {
+		display: flex;
+		.ed-part1 {
+			display: flex;
+			.employee-labels-part1 {
+				padding-right: 20px;
+				.elabel {
+					font-weight: 600;
+					margin-bottom: 20px;
+					color: #755139ff;
+				}
+			}
+			.employee-text-part1 {
+				.etextbox {
+					margin-bottom: 20px;
+					height: 38px;
+					width: 250px;
+					border: 1px solid #bebebe;
+					padding-left: 10px;
+					color: #755139ff;
+				}
+				.etextbox-leaveCount,
+				.etextbox-empSal {
+					.etextbox();
+					background-color: rgb(235, 235, 228);
+				}
+				.edropdown-error {
+					color: red;
+					padding-left: 10px;
+				}
+
+				.range-cal {
+					display: flex;
+					.dateRange-error {
+						color: red;
+						padding-left: 10px;
+						padding-top: 8px;
+					}
+				}
+				.ui.selection.dropdown.edropdown {
+					margin-bottom: 20px;
+				}
+			}
+		}
+		.ed-part1 {
+			.employee-labels-part1 {
+				width: auto;
+				.elabel {
+					line-height: 38px;
+				}
+				.employee-btn {
+					width: 250px;
+				}
+			}
+		}
+	}
+}

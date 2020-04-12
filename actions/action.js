@@ -114,3 +114,12 @@ export function requestEmployeeDetails() {
 		type: types.DISPLAY_EMPLOYEE_DETAILS_REQUEST,
 	};
 }
+
+export function updateEmployeeLeaveDetails(employeeId, leaveCount, leaveDates) {
+	return {
+		type: types.UPDATE_EMPLOYEE_LEAVE_DETAILS_REQUEST,
+		employeeId,
+		leaveCount,
+		leaveDates,
+	};
+}

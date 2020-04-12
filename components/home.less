@@ -95,8 +95,11 @@
 }
 .rcal-date-picker {
 	width: 250px;
-	.rcal-picker-body .rcal-single-calendar {
-		width: 248px;
+	.rcal-picker-body {
+		width: 250px;
+		.rcal-single-calendar {
+			width: 248px;
+		}
 	}
 
 	.rcal-picker-body .rcal-footer .rcal-done-button {
@@ -109,9 +112,8 @@
 	.rcal-picker-header {
 		border: 1px solid #bebebe;
 		height: 38px;
-		padding: 7px;
+		padding: 10px;
 		.rcal-header-content .rcal-date-value {
-			padding-left: 10px;
 			color: #755139ff;
 		}
 	}
@@ -130,6 +132,7 @@
 		.rcal-week-header
 		.rcal-week-item {
 		width: 100%;
+		color: #755139ff;
 	}
 
 	.rcal-picker-body
@@ -145,7 +148,19 @@
 		.rcal-calendar-days
 		.rcal-week-header
 		.rcal-date-selected,
-	.rcal-date-item:hover {
+	.rcal-date-item:hover,
+	.rcal-picker-body
+		.rcal-calendar-without-sidebar
+		.rcal-calendar
+		.rcal-calendar-days
+		.rcal-calendar-days-row
+		.rcal-date-item:hover,
+	.rcal-picker-body
+		.rcal-calendar-without-sidebar
+		.rcal-calendar
+		.rcal-calendar-days
+		.rcal-week-header
+		.rcal-week-item:hover {
 		background-color: #755139ff !important;
 		color: #f2edd7ff;
 	}
@@ -211,9 +226,19 @@ input[type='text'] {
 .react-datepicker__day,
 .react-datepicker__week,
 .react-datepicker__day-name,
-.react-datepicker__current-month {
+.react-datepicker__current-month,
+.rcal-date-picker
+	.rcal-picker-body
+	.rcal-calendar-without-sidebar
+	.rcal-calendar
+	.rcal-calendar-header
+	.rcal-calendar-header-label {
 	color: #755139ff !important;
 	font-weight: 600;
+	.rcal-header-label-item {
+		color: #755139ff !important;
+		font-weight: 600;
+	}
 }
 
 .react-datepicker__day--keyboard-selected:hover,
@@ -236,4 +261,117 @@ input[type='text'] {
 }
 .react-datepicker {
 	border-radius: 0px !important;
+}
+
+.rcal-date-picker .rcal-picker-body .rcal-calendar-without-sidebar .rcal-date-input {
+	.rcal-show-date input {
+		width: 182px;
+		border-color: #755139ff;
+	}
+	.rcal-show-date .rcal-date-input-selected {
+		outline: #755139ff;
+	}
+}
+
+.rcal-date-picker
+	.rcal-picker-body
+	.rcal-calendar-without-sidebar
+	.rcal-calendar
+	.rcal-calendar-days
+	.rcal-calendar-days-row
+	.rcal-date-range-start,
+.rcal-date-picker
+	.rcal-picker-body
+	.rcal-calendar-without-sidebar
+	.rcal-calendar
+	.rcal-calendar-days
+	.rcal-week-header
+	.rcal-date-range-start,
+.rcal-date-picker
+	.rcal-picker-body
+	.rcal-calendar-without-sidebar
+	.rcal-calendar
+	.rcal-calendar-days
+	.rcal-calendar-days-row
+	.rcal-range-selected,
+.rcal-date-picker
+	.rcal-picker-body
+	.rcal-calendar-without-sidebar
+	.rcal-calendar
+	.rcal-calendar-days
+	.rcal-week-header
+	.rcal-range-selected,
+.rcal-date-picker
+	.rcal-picker-body
+	.rcal-calendar-without-sidebar
+	.rcal-calendar
+	.rcal-calendar-decade
+	.rcal-calendar-decade-row
+	.rcal-calendar-decade-item.rcal-calendar-decade-selected
+	.rcal-calendar-decade-color-item,
+.rcal-date-picker
+	.rcal-picker-body
+	.rcal-calendar-without-sidebar
+	.rcal-calendar
+	.rcal-calendar-month
+	.rcal-calendar-month-row
+	.rcal-calendar-month-item.rcal-calendar-month-selected
+	.rcal-calendar-month-color-item,
+.rcal-date-picker
+	.rcal-picker-body
+	.rcal-calendar-without-sidebar
+	.rcal-calendar
+	.rcal-calendar-month
+	.rcal-calendar-month-row
+	.rcal-calendar-month-item
+	.rcal-calendar-month-color-item:hover,
+.rcal-date-picker
+	.rcal-picker-body
+	.rcal-calendar-without-sidebar
+	.rcal-calendar
+	.rcal-calendar-decade
+	.rcal-calendar-decade-row
+	.rcal-calendar-decade-item
+	.rcal-calendar-decade-color-item:hover {
+	background-color: #755139ff !important;
+	color: #f2edd7ff !important;
+}
+
+.rcal-date-picker
+	.rcal-picker-body
+	.rcal-calendar-without-sidebar
+	.rcal-calendar
+	.rcal-calendar-month
+	.rcal-calendar-month-row
+	.rcal-calendar-month-item,
+.rcal-date-picker
+	.rcal-picker-body
+	.rcal-calendar-without-sidebar
+	.rcal-calendar
+	.rcal-calendar-decade
+	.rcal-calendar-decade-row
+	.rcal-calendar-decade-item {
+	width: 76px;
+	color: #755139ff !important;
+	font-weight: 600;
+}
+
+.rcal-date-picker .rcal-picker-header .rcal-header-content .rcal-date-header {
+	color: rgba(191, 191, 191, 0.87);
+	font-size: 14px;
+	padding-bottom: 0px;
+}
+
+.ui.positive.button:hover,
+.ui.positive.buttons .button:hover,
+.ui.positive.button {
+	background-color: #755139ff !important;
+	color: #f2edd7ff !important;
+}
+.ui.small.modal > .header:not(.ui) {
+	color: #755139ff !important;
+}
+.ui.modal > .content {
+	font-size: 15px !important;
+	color: #755139ff !important;
 }

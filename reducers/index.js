@@ -11,6 +11,7 @@ import insertSalesDetails from './InsertSalesDetailsReducer';
 import salesDetails from './SalesDetailsReducer';
 import insertEmployeeDetails from './InsertEmployeeDetailsReducer';
 import employeeDetails from './EmployeeDetailsReducer';
+import updateEmployeeLeaveDetails from './UpdateEmployeeLeaveDetailsReducer';
 
 export default combineReducers({
 	userDetails,
@@ -24,4 +25,5 @@ export default combineReducers({
 	salesDetails,
 	insertEmployeeDetails,
 	employeeDetails,
+	updateEmployeeLeaveDetails,
 });

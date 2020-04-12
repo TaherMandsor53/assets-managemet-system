@@ -92,6 +92,18 @@ const transformEmployeeDetails = (data, designation) => {
 	);
 };
 
+const transformStaffName = data => {
+	return (
+		data &&
+		data.map(item => {
+			return {
+				text: item.employeeName,
+				value: item.employeeId,
+			};
+		})
+	);
+};
+
 export default {
 	transformProductType,
 	transformProductDetails,
@@ -99,4 +111,5 @@ export default {
 	transformPurchaseDetails,
 	transformSalesDetails,
 	transformEmployeeDetails,
+	transformStaffName,
 };

@@ -175,8 +175,10 @@ app.post('/api/postEmployeeDetails', (req, res) => {
 	let dateOfJoining = '"' + req.body.doj + '"';
 	let identityNo = '"' + req.body.identityVal + '"';
 	let salary = '"' + req.body.salaryVal + '"';
+	let leaveCount = 0;
+	let leaveDates = '';
 
-	const INSERT_EMPLOYEE_DETAILS = `INSERT INTO EmployeeDetails(designation,employeeName,address,dateOfBirth,dateOfJoining,identityNo,salary)VALUES(${designation},${employeeName},${address},${dateOfBirth},${dateOfJoining},${identityNo},${salary})`;
+	const INSERT_EMPLOYEE_DETAILS = `INSERT INTO EmployeeDetails(designation,employeeName,address,dateOfBirth,dateOfJoining,identityNo,salary,leaveCount,leaveDates)VALUES(${designation},${employeeName},${address},${dateOfBirth},${dateOfJoining},${identityNo},${salary},${leaveCount},${leaveDates})`;
 	connection.query(INSERT_EMPLOYEE_DETAILS, (err, result) => {
 		if (err) {
 			res.send(err);
@@ -194,6 +196,20 @@ app.get('/api/getEmployeeDetails', (req, res) => {
 			res.send(err);
 		} else {
 			res.json({ data: result });
+		}
+	});
+});
+
+app.post('/api/updateEmployeeLeaveDetails', (req, res) => {
+	let leaveCount = req.body.leaveCount;
+	let leaveDates = '"' + req.body.leaveDates + '"';
+	let employeeId = '"' + req.body.employeeId + '"';
+	const UPDATE_EMPLOYEE_LEAVE_DETAILS = `UPDATE EmployeeDetails SET leaveCount=${leaveCount}, leaveDates=${leaveDates} WHERE employeeId=${employeeId}`;
+	connection.query(UPDATE_EMPLOYEE_LEAVE_DETAILS, (err, result) => {
+		if (err) {
+			res.send(err);
+		} else {
+			res.send('Employee leave details updated successfully');
 		}
 	});
 });

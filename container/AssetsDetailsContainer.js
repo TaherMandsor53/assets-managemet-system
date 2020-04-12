@@ -10,6 +10,7 @@ import {
 	requestSalesDetails,
 	insertEmployeeDetails,
 	requestEmployeeDetails,
+	updateEmployeeLeaveDetails,
 } from '../actions/action';
 import Home from '../components/Home';
 
@@ -23,6 +24,7 @@ const mapStateToProps = state => ({
 	salesDetails: state.salesDetails.salesDetailsData.data,
 	insertEmployeeDetails: state.insertEmployeeDetails.insertEmployeeDetailsData.data,
 	employeeDetails: state.employeeDetails.employeeDetailsData.data,
+	updateEmployeeLeaveDetails: state.updateEmployeeLeaveDetails.updateEmployeeLeaveDetailsData.data,
 });
 
 const mapDispatchToProps = dispatch =>
@@ -37,6 +39,7 @@ const mapDispatchToProps = dispatch =>
 			requestSalesDetails,
 			insertEmployeeDetails,
 			requestEmployeeDetails,
+			updateEmployeeLeaveDetails,
 		},
 		dispatch,
 	);
