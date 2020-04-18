@@ -23,6 +23,8 @@ class SalesDetails extends React.Component {
 			custCheck: false,
 			customerType: '',
 			modalOpen: false,
+			salesProductPrice: '',
+			quantMsg: '',
 			//validation errorchecks
 			custTypeErrorLabel: '',
 			custTypeErrorCheck: false,
@@ -36,19 +38,28 @@ class SalesDetails extends React.Component {
 			pQuantityErrorCheck: false,
 			paymentErrorLabel: '',
 			paymentErrorCheck: false,
+			salesPriceLabel: '',
+			salesPriceCheck: false,
 		};
 	}
 
 	componentDidMount() {
-		const { requestProductDetails, requestProductTypeDetails, requestSalesDetails } = this.props;
+		const {
+			requestProductDetails,
+			requestProductTypeDetails,
+			requestSalesDetails,
+			requestPurchaseDetails,
+		} = this.props;
 		requestProductDetails(); //fetching product Details
 		requestProductTypeDetails(); // fetching Product Type details
 		requestSalesDetails(); // fetching sales details
+		requestPurchaseDetails(); // fetching Purchase Details
 	}
 
 	onProductTypeChange = (event, data) => {
 		this.setState({ selectedTypeId: data.value });
 		document.getElementById('quantity').value = '';
+		document.getElementById('quantity').placeholder = '';
 	};
 
 	onProductDateChange = date => {
@@ -60,10 +71,14 @@ class SalesDetails extends React.Component {
 		document.getElementById('quantity').value = '';
 	};
 
+	onSalesPriceChange = event => {
+		let salesPrice = event.target.value.replace(/[^0-9]/g, '');
+		this.setState({ salesProductPrice: salesPrice });
+	};
+
 	onQuantityChange = event => {
-		let quantity = event.target.value.replace(/[^0-9]/g, '');
-		let price = document.getElementsByClassName('stextbox-price')[0].value;
-		let totalAmount = price * quantity;
+		let quantity = event.target.value;
+		let totalAmount = this.state.salesProductPrice * quantity;
 		this.setState({ totalAmtVal: totalAmount, quantityVal: quantity });
 	};
 
@@ -125,6 +140,7 @@ class SalesDetails extends React.Component {
 			transactionId,
 			customerType,
 			selectedTypeId,
+			salesProductPrice,
 		} = this.state;
 
 		if (
@@ -133,7 +149,8 @@ class SalesDetails extends React.Component {
 			productVal.length > 0 &&
 			salesDateVal &&
 			quantityVal.length > 0 &&
-			paymentMode.length > 0
+			paymentMode.length > 0 &&
+			salesProductPrice.length > 0
 		) {
 			const { insertSalesDetails } = this.props;
 			let dbFormat = moment(salesDateVal).format('YYYY-MM-DD');
@@ -158,6 +175,7 @@ class SalesDetails extends React.Component {
 				transactionId: '',
 				salesDateVal: '',
 				selectedTypeId: '',
+				salesProductPrice: '',
 				modalOpen: true,
 				custTypeErrorLabel: '',
 				custTypeErrorCheck: false,
@@ -172,6 +190,8 @@ class SalesDetails extends React.Component {
 				paymentErrorLabel: '',
 				paymentErrorCheck: false,
 				custCheck: false,
+				salesPriceLabel: '',
+				salesPriceCheck: false,
 			});
 			document.getElementById('cash').checked = false;
 			document.getElementById('cashless').checked = false;
@@ -193,6 +213,8 @@ class SalesDetails extends React.Component {
 				pQuantityErrorCheck: true,
 				paymentErrorLabel: 'Please select any option',
 				paymentErrorCheck: true,
+				salesPriceLabel: 'Sales Price is Mandatory',
+				salesPriceCheck: true,
 			});
 		}
 	};
@@ -209,6 +231,7 @@ class SalesDetails extends React.Component {
 			salesDateVal: '',
 			selectedTypeId: '',
 			custTypeErrorLabel: '',
+			salesProductPrice: '',
 			custTypeErrorCheck: false,
 			pTypeErrorLabel: '',
 			pTypeErrorCheck: false,
@@ -220,6 +243,8 @@ class SalesDetails extends React.Component {
 			pQuantityErrorCheck: false,
 			paymentErrorLabel: '',
 			paymentErrorCheck: false,
+			salesPriceLabel: '',
+			salesPriceCheck: false,
 		});
 		document.getElementById('cash').checked = false;
 		document.getElementById('cashless').checked = false;
@@ -227,12 +252,31 @@ class SalesDetails extends React.Component {
 		document.getElementById('unregistered').checked = false;
 	};
 
+	calculateTotalQuantity = data => {
+		return data && data.map(item => item.quantity).reduce((prev = 0, next = 0) => prev + next);
+	};
+
+	calculateQuantityMessage = totalQuant => {
+		let quantMsg = '';
+		if (totalQuant === 0) {
+			quantMsg = 'Product is currently out of stock: ' + totalQuant;
+		} else if (totalQuant >= 1 && totalQuant <= 10) {
+			quantMsg = 'Please place an order : ' + totalQuant;
+		} else if (totalQuant === false) {
+			quantMsg = '';
+		} else {
+			quantMsg = 'Available product stock: ' + totalQuant;
+		}
+		return quantMsg;
+	};
+
 	render() {
-		const { productTypeDetails, productDetails, salesDetails } = this.props;
+		const { productTypeDetails, productDetails, salesDetails, purchaseDetails } = this.props;
 		const {
 			selectedTypeId,
 			salesDateVal,
 			productVal,
+			salesProductPrice,
 			totalAmtVal,
 			customerName,
 			quantityVal,
@@ -241,7 +285,6 @@ class SalesDetails extends React.Component {
 			custCheck,
 			modalOpen,
 			custTypeErrorLabel,
-			custTypeErrorCheck,
 			pTypeErrorLabel,
 			pTypeErrorCheck,
 			pNameErrorLabel,
@@ -251,12 +294,22 @@ class SalesDetails extends React.Component {
 			pQuantityErrorLabel,
 			pQuantityErrorCheck,
 			paymentErrorLabel,
-			paymentErrorCheck,
+			salesPriceLabel,
+			salesPriceCheck,
 		} = this.state;
 		const transformProductTypeDetails = transform.transformProductType(productTypeDetails && productTypeDetails);
 		let productFilter = productDetails && productDetails.filter(item => item.productTypeId === selectedTypeId);
 		const transformFilterProduct = transform.transformFilterProduct(productFilter);
 		let productPrice = productFilter && productFilter.find(item => item.productId === productVal);
+
+		//Total Quantity Calculation
+		let filterProductQuantity = purchaseDetails && purchaseDetails.filter(item => item.productId === productVal);
+		console.log('Total product Quantity:', filterProductQuantity);
+		let totalProductQuantity = this.calculateTotalQuantity(
+			filterProductQuantity.length > 0 && filterProductQuantity,
+		);
+		console.log('Total Quant:', totalProductQuantity);
+		let quantMsg = this.calculateQuantityMessage(totalProductQuantity);
 
 		const transformSalesDetails = transform.transformSalesDetails(salesDetails, productDetails);
 
@@ -354,20 +407,23 @@ class SalesDetails extends React.Component {
 							<div className="sales-text-part2">
 								<input
 									className={pQuantityErrorCheck ? 'stext-error' : 'stextbox'}
-									type="text"
 									onChange={this.onQuantityChange}
-									title="Enter numbers only."
-									pattern="[\d]{0-9}{1,5}"
 									id="quantity"
 									value={quantityVal}
-									placeholder={pQuantityErrorCheck && pQuantityErrorLabel}
+									placeholder={pQuantityErrorCheck ? pQuantityErrorLabel : quantMsg}
 								/>
 								<br />
 								<input
-									className="stextbox-price"
-									type="text"
-									value={productPrice ? productPrice.price : ''}
-									readOnly
+									className={salesPriceCheck ? 'stext-error' : 'stextbox'}
+									value={salesProductPrice}
+									onChange={this.onSalesPriceChange}
+									placeholder={
+										salesPriceCheck
+											? salesPriceLabel
+											: productPrice
+											? 'Product purchase price: ' + productPrice.price
+											: ''
+									}
 								/>
 								<br />
 								<input
@@ -376,7 +432,7 @@ class SalesDetails extends React.Component {
 									readOnly
 									value={totalAmtVal ? totalAmtVal : ''}
 								/>
-								<div className="payment-mode">
+								<div className={'payment-mode'}>
 									<input
 										type="radio"
 										id="cash"
