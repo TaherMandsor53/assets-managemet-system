@@ -6,6 +6,7 @@ import PurchaseDetails from './purchase-details/PurchaseDetails';
 import SalesDetails from './sales-details/SalesDetails';
 import StaffDetails from './staff-details/StaffDetails';
 import StaffAttendanceDetails from './staff-attendance-details/StaffAttendanceDetails';
+import HomeTab from './HomeTab';
 import moment from 'moment';
 
 class Home extends React.Component {
@@ -15,9 +16,10 @@ class Home extends React.Component {
 	}
 
 	componentDidMount() {
-		const { requestPurchaseDetails, requestSalesDetails } = this.props;
+		const { requestPurchaseDetails, requestSalesDetails, requestEmployeeDetails } = this.props;
 		requestPurchaseDetails(); // fetch purchase details
 		requestSalesDetails(); // fetch sales details
+		requestEmployeeDetails(); // fetch employee details
 	}
 
 	onLogoutClick = () => {
@@ -28,7 +30,7 @@ class Home extends React.Component {
 		const panes = [
 			{
 				menuItem: 'Home',
-				render: () => <Tab.Pane attached={false}>Home Content</Tab.Pane>,
+				render: () => <HomeTab {...this.props} />,
 			},
 			{
 				menuItem: 'Product Details',
@@ -56,12 +58,22 @@ class Home extends React.Component {
 	};
 
 	calculateTotalAmt = data => {
-		return data && data.map(item => item.totalAmount).reduce((prev, next) => prev + next);
+		return data && data.map(item => item.totalAmount).reduce((prev, next) => prev + next, 0);
+	};
+
+	displayEmpLeaves = data => {
+		return (
+			data &&
+			data.map(item => {
+				return `<div class='leave-count'>${item.employeeName} - ${item.leaveCount}</div>`;
+			})
+		);
 	};
 
 	render() {
-		const { purchaseDetails, salesDetails } = this.props;
+		const { purchaseDetails, salesDetails, employeeDetails } = this.props;
 		let currentMonth = moment().format('MMM-YYYY');
+
 		//Total purchase amount calculation
 		let filterPurchaseCurrentMonth =
 			purchaseDetails &&
@@ -73,6 +85,23 @@ class Home extends React.Component {
 			salesDetails && salesDetails.filter(item => moment(item.salesDate).format('MMM-YYYY') === currentMonth);
 		let totalMonthSalesAmt = this.calculateTotalAmt(filterSalesCurrentMonth);
 
+		//Total stock calculation
+		let totalPurchaseAmt = this.calculateTotalAmt(purchaseDetails);
+		let totalSalesAmt = this.calculateTotalAmt(salesDetails);
+		let stockDetailsAmt = totalPurchaseAmt - totalSalesAmt;
+
+		//Profit & Loss calculation
+		let CurrDate = new Date();
+		let monthFirstDay = new Date(CurrDate.getFullYear(), CurrDate.getMonth(), 1);
+		let openingStock = 0;
+		if (monthFirstDay || monthFirstDay.getMonth() === CurrDate.getMonth) {
+			openingStock = stockDetailsAmt;
+		}
+		let profitLoss = totalPurchaseAmt - totalSalesAmt - stockDetailsAmt - openingStock;
+
+		// employee leave details
+		let empLeaveDetails = this.displayEmpLeaves(employeeDetails);
+		let transformEmpDetails = empLeaveDetails && empLeaveDetails.join('');
 		return (
 			<div className="as-home-details">
 				<div className="as-banner-details">
@@ -94,15 +123,19 @@ class Home extends React.Component {
 							description={totalMonthSalesAmt + ' INR'}
 							cardClass="as-sales-card"
 						/>
-						<CardComponent headerName="Stock Details" description="20,000 INR" cardClass="as-stock-card" />
+						<CardComponent
+							headerName="Stock Details"
+							description={stockDetailsAmt + ' INR'}
+							cardClass="as-stock-card"
+						/>
 						<CardComponent
 							headerName="Profit/Loss"
-							description="20,000 INR"
-							cardClass="as-profit-loss-card"
+							description={profitLoss + ' INR'}
+							cardClass={profitLoss > 0 ? 'profit-card' : profitLoss === 0 ? 'zero-card' : 'loss-card'}
 						/>
 						<CardComponent
 							headerName="Staff Details"
-							description="20,000 INR"
+							description={transformEmpDetails}
 							cardClass="as-staff-management-card"
 						/>
 					</div>

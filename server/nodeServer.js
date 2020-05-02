@@ -3,6 +3,8 @@ const cors = require('cors');
 const app = express();
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
+const cron = require('node-cron');
+const fs = require('fs');
 
 const connection = mysql.createConnection({
 	host: 'localhost',
@@ -210,6 +212,18 @@ app.post('/api/updateEmployeeLeaveDetails', (req, res) => {
 			res.send(err);
 		} else {
 			res.send('Employee leave details updated successfully');
+		}
+	});
+});
+
+//schedule a cron job to reset the attendance data - every month
+cron.schedule('0 */3 1 * *', () => {
+	const UPDATE_EMPLOYEE_LEAVE_DETAILS = `UPDATE EmployeeDetails SET leaveCount=0, leaveDates='' WHERE designation < 5`;
+	connection.query(UPDATE_EMPLOYEE_LEAVE_DETAILS, (err, result) => {
+		if (err) {
+			console.log('Cron Job Failed', err);
+		} else {
+			console.log('Cron job success');
 		}
 	});
 });

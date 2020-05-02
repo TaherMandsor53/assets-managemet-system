@@ -20,21 +20,67 @@
 			display: flex;
 			margin: 50px 0px 30px;
 			justify-content: center;
+			.card-header {
+				font-size: 21px;
+				color: #755139ff;
+				padding: 20px 15px 15px 15px;
+				font-weight: 600;
+			}
 			.as-purchase-card {
 				width: 210px;
-				height: 125px;
+				height: 155px;
 				background-color: #f2edd7ff;
 				border: 1px solid #755139ff;
+				border-radius: 6px;
+				.card-description {
+					font-size: 20px;
+					padding-left: 15px;
+					color: #755139ff;
+					padding-top: 7px;
+				}
 			}
 			.as-sales-card,
-			.as-profit-loss-card,
 			.as-stock-card,
-			.as-staff-management-card {
+			.as-staff-management-card,
+			.zero-card {
 				width: 210px;
 				margin-left: 25px;
-				height: 125px;
+				height: 155px;
 				background-color: #f2edd7ff;
 				border: 1px solid #755139ff;
+				border-radius: 6px;
+				.card-description {
+					font-size: 20px;
+					padding-left: 15px;
+					color: #755139ff;
+					padding-top: 7px;
+				}
+			}
+			.loss-card {
+				.zero-card;
+				.card-description {
+					color: #f6070b;
+					font-weight: bold;
+				}
+			}
+			.profit-card {
+				.zero-card;
+				.card-description {
+					color: #145a32;
+					font-weight: bold;
+				}
+			}
+			.as-staff-management-card {
+				.card-header {
+					padding: 20px 15px 12px 15px;
+				}
+				.card-description {
+					font-size: 16px;
+					padding-top: 0px;
+					.leave-count {
+						padding-bottom: 5px;
+					}
+				}
 			}
 		}
 	}
@@ -56,15 +102,12 @@
 	}
 }
 
-.ui.card > .content > .header:not(.ui) {
-	font-size: 21px !important;
-	color: #755139ff;
-}
-
-.ui.card > .content > .header + .description {
-	font-size: 21px !important;
-	color: #755139ff;
-	padding-top: 7px;
+.home-tab {
+	.emp-table-header {
+		font-size: 23px;
+		margin-top: 35px;
+		color: #755139ff;
+	}
 }
 
 .btn-submit,

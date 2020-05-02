@@ -24,7 +24,7 @@ class SalesDetails extends React.Component {
 			customerType: '',
 			modalOpen: false,
 			salesProductPrice: '',
-			quantMsg: '',
+			showQuantMsg: false,
 			//validation errorchecks
 			custTypeErrorLabel: '',
 			custTypeErrorCheck: false,
@@ -67,13 +67,14 @@ class SalesDetails extends React.Component {
 	};
 
 	onProductChange = (event, data) => {
-		this.setState({ productVal: data.value });
+		this.setState({ productVal: data.value, showQuantMsg: true });
 		document.getElementById('quantity').value = '';
 	};
 
 	onSalesPriceChange = event => {
 		let salesPrice = event.target.value.replace(/[^0-9]/g, '');
-		this.setState({ salesProductPrice: salesPrice });
+		let totalAmount = salesPrice * this.state.quantityVal;
+		this.setState({ salesProductPrice: salesPrice, totalAmtVal: totalAmount });
 	};
 
 	onQuantityChange = event => {
@@ -165,6 +166,7 @@ class SalesDetails extends React.Component {
 				paymentMode,
 				transactionId,
 			);
+			document.getElementById('quantity').placeholder = '';
 			this.setState({
 				billNo: '',
 				productVal: '',
@@ -220,6 +222,7 @@ class SalesDetails extends React.Component {
 	};
 
 	onCancel = () => {
+		document.getElementById('quantity').placeholder = '';
 		this.setState({
 			billNo: '',
 			productVal: '',
@@ -256,14 +259,18 @@ class SalesDetails extends React.Component {
 		return data && data.map(item => item.quantity).reduce((prev = 0, next = 0) => prev + next);
 	};
 
-	calculateQuantityMessage = totalQuant => {
+	calculateQuantityMessage = (totalPurQuant, totalSalQuant) => {
 		let quantMsg = '';
+		// False condition handled
+		if (totalPurQuant === false) {
+			quantMsg = '';
+		}
+		//Total Product Quantity calculation
+		let totalQuant = totalPurQuant - (totalSalQuant === false ? 0 : totalSalQuant);
 		if (totalQuant === 0) {
 			quantMsg = 'Product is currently out of stock: ' + totalQuant;
 		} else if (totalQuant >= 1 && totalQuant <= 10) {
 			quantMsg = 'Please place an order : ' + totalQuant;
-		} else if (totalQuant === false) {
-			quantMsg = '';
 		} else {
 			quantMsg = 'Available product stock: ' + totalQuant;
 		}
@@ -284,6 +291,7 @@ class SalesDetails extends React.Component {
 			transactionId,
 			custCheck,
 			modalOpen,
+			showQuantMsg,
 			custTypeErrorLabel,
 			pTypeErrorLabel,
 			pTypeErrorCheck,
@@ -302,15 +310,19 @@ class SalesDetails extends React.Component {
 		const transformFilterProduct = transform.transformFilterProduct(productFilter);
 		let productPrice = productFilter && productFilter.find(item => item.productId === productVal);
 
-		//Total Quantity Calculation
-		let filterProductQuantity = purchaseDetails && purchaseDetails.filter(item => item.productId === productVal);
-		console.log('Total product Quantity:', filterProductQuantity);
-		let totalProductQuantity = this.calculateTotalQuantity(
-			filterProductQuantity.length > 0 && filterProductQuantity,
+		//Total Purchase Quantity
+		let filterPurchaseProductQuantity =
+			purchaseDetails && purchaseDetails.filter(item => item.productId === productVal);
+		let totalPurchaseQuantity = this.calculateTotalQuantity(
+			filterPurchaseProductQuantity.length > 0 && filterPurchaseProductQuantity,
 		);
-		console.log('Total Quant:', totalProductQuantity);
-		let quantMsg = this.calculateQuantityMessage(totalProductQuantity);
 
+		//Total Sales Quantity
+		let filterSalesProductQuantity = salesDetails && salesDetails.filter(item => item.productId === productVal);
+		let totalSalesQuantity = this.calculateTotalQuantity(
+			filterSalesProductQuantity.length > 0 && filterSalesProductQuantity,
+		);
+		let quantMsg = this.calculateQuantityMessage(totalPurchaseQuantity, totalSalesQuantity);
 		const transformSalesDetails = transform.transformSalesDetails(salesDetails, productDetails);
 
 		return (
@@ -410,7 +422,9 @@ class SalesDetails extends React.Component {
 									onChange={this.onQuantityChange}
 									id="quantity"
 									value={quantityVal}
-									placeholder={pQuantityErrorCheck ? pQuantityErrorLabel : quantMsg}
+									placeholder={
+										pQuantityErrorCheck ? pQuantityErrorLabel : showQuantMsg ? quantMsg : ''
+									}
 								/>
 								<br />
 								<input

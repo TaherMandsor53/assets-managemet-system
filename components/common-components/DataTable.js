@@ -74,7 +74,9 @@ class DataTable extends React.Component {
 								return (
 									<Table.Row key={index}>
 										{columnHeader.map((col, index) => (
-											<Table.Cell key={index}>{row[col.id]}</Table.Cell>
+											<Table.Cell key={index}>
+												<span dangerouslySetInnerHTML={{ __html: row[col.id] }} />
+											</Table.Cell>
 										))}
 									</Table.Row>
 								);

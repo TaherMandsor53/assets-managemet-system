@@ -133,10 +133,30 @@ const employeeDetailsColumnHeader = [
 	},
 ];
 
+const empSalaryLeaveColumnHeader = [
+	{
+		id: 'name',
+		value: 'Employee Name',
+	},
+	{
+		id: 'salary',
+		value: 'Total Employee Salary',
+	},
+	{
+		id: 'leaveCount',
+		value: 'Total Leaves',
+	},
+	{
+		id: 'leaveDates',
+		value: 'Leave Dates',
+	},
+];
+
 export default {
 	productDetailsColumnHeader,
 	purchaseDetailsColumnHeader,
 	salesDetailsColumnHeader,
 	employeeDesignation,
 	employeeDetailsColumnHeader,
+	empSalaryLeaveColumnHeader,
 };

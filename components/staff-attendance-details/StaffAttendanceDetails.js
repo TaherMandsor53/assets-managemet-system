@@ -4,7 +4,6 @@ import transform from '../../utils/transform';
 import { RangeCalendar } from 'react-date-picker-range';
 import moment from 'moment';
 import columnConstant from '../../constants/constants';
-import DataTable from '../common-components/DataTable';
 import MessageComponent from '../common-components/MessageComponent';
 
 class StaffAttendanceDetails extends React.Component {
@@ -118,7 +117,6 @@ class StaffAttendanceDetails extends React.Component {
 			leaveDateErrorLabel,
 		} = this.state;
 		const { employeeDetails } = this.props;
-		console.log('Employee Details:', employeeDetails);
 		// filter employee designation
 		const filterSelectedDesignation =
 			employeeDetails && employeeDetails.filter(item => item.designation === designationId);
