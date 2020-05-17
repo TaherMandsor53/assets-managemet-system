@@ -232,11 +232,7 @@ class ProductDetails extends React.Component {
 					</div>
 					<div className="product-date">
 						<p className="date-text">Product date</p>
-						<SingleCalendar
-							value={productDateVal}
-							onChangeDate={this.onProductDateChange}
-							label="Product Date"
-						/>
+						<SingleCalendar value={productDateVal} onChangeDate={this.onProductDateChange} />
 						<span className="error-label">{dateErrorLabel}</span>
 					</div>
 					<div className="product-name">

@@ -255,10 +255,6 @@ class SalesDetails extends React.Component {
 		document.getElementById('unregistered').checked = false;
 	};
 
-	calculateTotalQuantity = data => {
-		return data && data.map(item => item.quantity).reduce((prev = 0, next = 0) => prev + next);
-	};
-
 	calculateQuantityMessage = (totalPurQuant, totalSalQuant) => {
 		let quantMsg = '';
 		// False condition handled
@@ -313,13 +309,13 @@ class SalesDetails extends React.Component {
 		//Total Purchase Quantity
 		let filterPurchaseProductQuantity =
 			purchaseDetails && purchaseDetails.filter(item => item.productId === productVal);
-		let totalPurchaseQuantity = this.calculateTotalQuantity(
+		let totalPurchaseQuantity = transform.calculateTotalQuantity(
 			filterPurchaseProductQuantity.length > 0 && filterPurchaseProductQuantity,
 		);
 
 		//Total Sales Quantity
 		let filterSalesProductQuantity = salesDetails && salesDetails.filter(item => item.productId === productVal);
-		let totalSalesQuantity = this.calculateTotalQuantity(
+		let totalSalesQuantity = transform.calculateTotalQuantity(
 			filterSalesProductQuantity.length > 0 && filterSalesProductQuantity,
 		);
 		let quantMsg = this.calculateQuantityMessage(totalPurchaseQuantity, totalSalesQuantity);

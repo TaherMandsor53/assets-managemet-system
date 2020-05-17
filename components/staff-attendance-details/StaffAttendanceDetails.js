@@ -32,6 +32,7 @@ class StaffAttendanceDetails extends React.Component {
 
 	onModalClose = () => {
 		this.setState({ modalOpen: false });
+		this.props.requestEmployeeDetails();
 	};
 
 	onDesignationChange = (event, data) => {

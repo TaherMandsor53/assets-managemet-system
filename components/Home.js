@@ -134,7 +134,7 @@ class Home extends React.Component {
 							cardClass={profitLoss > 0 ? 'profit-card' : profitLoss === 0 ? 'zero-card' : 'loss-card'}
 						/>
 						<CardComponent
-							headerName="Staff Details"
+							headerName="Staff Leave Details"
 							description={transformEmpDetails}
 							cardClass="as-staff-management-card"
 						/>
