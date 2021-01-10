@@ -147,6 +147,7 @@ class LoginForm extends Component {
 						error={errorCheck}
 						label={securityErrorMessage}
 						value={securityAnsValue}
+						type="password"
 					/>
 
 					<Button className="security-submit-button" onClick={this.onSecuritySubmitClick}>

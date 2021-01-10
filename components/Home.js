@@ -106,7 +106,7 @@ class Home extends React.Component {
 			<div className="as-home-details">
 				<div className="as-banner-details">
 					<Segment className="as-header">
-						<span className="as-header-text">Assets Management System</span>
+						<span className="as-header-text">EMPLOYEE AND PRODUCT MANAGEMENT SYSTEM</span>
 						<span className="as-logout-text" onClick={this.onLogoutClick}>
 							<Icon name="user outline" size="large" />
 							Logout

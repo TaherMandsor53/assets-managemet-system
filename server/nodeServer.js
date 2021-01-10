@@ -178,7 +178,7 @@ app.post('/api/postEmployeeDetails', (req, res) => {
 	let identityNo = '"' + req.body.identityVal + '"';
 	let salary = '"' + req.body.salaryVal + '"';
 	let leaveCount = 0;
-	let leaveDates = '';
+	let leaveDates = null;
 
 	const INSERT_EMPLOYEE_DETAILS = `INSERT INTO EmployeeDetails(designation,employeeName,address,dateOfBirth,dateOfJoining,identityNo,salary,leaveCount,leaveDates)VALUES(${designation},${employeeName},${address},${dateOfBirth},${dateOfJoining},${identityNo},${salary},${leaveCount},${leaveDates})`;
 	connection.query(INSERT_EMPLOYEE_DETAILS, (err, result) => {
